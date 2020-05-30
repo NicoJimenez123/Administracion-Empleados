@@ -9,14 +9,17 @@ public class NodoTrabajador {
 		this.anterior = null;
 	}
 	// Getters and Setters
-	public Trabajador getPersona() {
-		return this.persona;
+	public void setPersona(Trabajador p) {
+		this.persona = p;
 	}
 	public void setSiguiente(NodoTrabajador n) {
 		this.siguiente = n;
 	}
 	public void setAnterior(NodoTrabajador n) {
 		this.anterior = n;
+	}
+	public Trabajador getPersona() {
+		return this.persona;
 	}
 	public NodoTrabajador getSiguiente() {
 		return this.siguiente;
