@@ -1,15 +1,15 @@
-
+import ayp3.tp.*;
 public class NodoTrabajador {
-	Trabajador persona;
+	ITrabajador persona;
 	NodoTrabajador siguiente;
 	NodoTrabajador anterior;
-	public NodoTrabajador(Trabajador p) {
+	public NodoTrabajador(ITrabajador p) {
 		this.persona = p;
 		this.siguiente = null;
 		this.anterior = null;
 	}
 	// Getters and Setters
-	public void setPersona(Trabajador p) {
+	public void setPersona(ITrabajador p) {
 		this.persona = p;
 	}
 	public void setSiguiente(NodoTrabajador n) {
