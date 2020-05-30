@@ -18,7 +18,7 @@ public class NodoTrabajador {
 	public void setAnterior(NodoTrabajador n) {
 		this.anterior = n;
 	}
-	public Trabajador getPersona() {
+	public ITrabajador getPersona() {
 		return this.persona;
 	}
 	public NodoTrabajador getSiguiente() {
