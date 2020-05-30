@@ -1,13 +1,28 @@
 import ayp3.tp.*;
 public class Empresa implements IEmpresa{
 	NodoTrabajador primero;
+	NodoTrabajador ultimo;
 	public Empresa() {
 		this.primero = null;
 	}
 	@Override
 	public void agregarEmpleado(ITrabajador trabajador) {
-		// TODO Auto-generated method stub
-		
+		// Primero creo un nodo con el trabajador a insertar
+		NodoTrabajador nuevoTrabajador = new NodoTrabajador(trabajador);
+		// Me fijo si hay algun trabajador en la lista
+		if(this.primero == null) {
+			// Si no lo hay, tomo al nuevo trabajador y lo seteo como primero y ultimo en la lista
+			this.primero = nuevoTrabajador;
+			this.ultimo = nuevoTrabajador;
+		}
+		else {
+			// Enlazo al nuevo trabajador con el ultimo en la lista
+			this.ultimo.setSiguiente(nuevoTrabajador);
+			// Tambien enlazo al ultimo de la lista con el nuevo
+			nuevoTrabajador.setAnterior(this.ultimo);
+			// Ahora el nuevo pasa a ser el ultimo
+			this.ultimo = nuevoTrabajador;
+		}
 	}
 	@Override
 	public void agregarDirectivo(ITrabajador trabajador) {
