@@ -19,7 +19,7 @@ public enum TipoCargo {
 	        return cargo;
 	    }
 	    public void setSalario(double salario) {
-	    	salario=salario;
+	    	this.salario=salario;
 	    }
 	    public double getSalario() {
 	    
