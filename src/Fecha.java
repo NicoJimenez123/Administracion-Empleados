@@ -56,4 +56,8 @@ public class Fecha{
         f.imprimir();
     }
     
+    public int calcularMeses() {
+    	return 0;
+    }
+    
 }

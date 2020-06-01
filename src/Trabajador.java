@@ -1,114 +1,109 @@
 import ayp3.tp.*;
 public class Trabajador implements ITrabajador{
+	private long dni;
 	private String nombre;
-
+	private String apellido;
+	private TipoCargo cargo;
+	private Fecha fechaIngreso;
+	private String titulo;
+	private String titulop;
+	private ITrabajador jefe;
 	public Trabajador(long dni, String nombre, String apellido, TipoCargo cargo, Fecha fechaIngreso) {
-		
+		this.dni=dni;
+		this.nombre=nombre;
+		this.apellido=apellido;
+		this.cargo=cargo;
+		this.fechaIngreso=fechaIngreso;
 	}
 	@Override
 	public boolean esEmpleado() {
-		// TODO Auto-generated method stub
-		return false;
+		return (this.cargo.equals(TipoCargo.JEFES) ||this.cargo.equals(TipoCargo.SUPERVISOR)
+				||this.cargo.equals(TipoCargo.OPERARIO));
 	}
 	@Override
-	public boolean esDirectivo() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public TipoCargo getCargo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public int getMesesAntiguedad() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public void setTituloUniversitario(String titulo) {
-		// TODO Auto-generated method stub
+	public boolean esDirectivo() {	
+		return (this.cargo.equals(TipoCargo.DIRECTOR_GENERAL)||this.cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO));
 		
 	}
 	@Override
+	public TipoCargo getCargo() {
+		return cargo;
+	}
+	@Override
+	public int getMesesAntiguedad() {
+		return fechaIngreso.calcularMeses();
+		//obtener fecha actual 
+		//calcular actual e ingreso
+	}
+	@Override
+	public void setTituloUniversitario(String titulo) {
+		this.titulo=titulo;
+	}
+	@Override
 	public String getTituloUniversitario() {
-		// TODO Auto-generated method stub
-		return null;
+		return titulo;
 	}
 	@Override
 	public boolean tieneTituloUniversitario() {
-		// TODO Auto-generated method stub
-		return false;
+		return (titulo!=null);
 	}
 	@Override
 	public void setTituloPostgrado(String titulo) throws ExcepcionOperacionNoPermitida {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	@Override
 	public String getTituloPostgrado() {
-		// TODO Auto-generated method stub
-		return null;
+		return titulop;
 	}
 	@Override
 	public boolean tieneTituloPostgrado() {
-		// TODO Auto-generated method stub
-		return false;
+		return (titulop!=null);
 	}
 	@Override
 	public String getNombre() {
-		// TODO Auto-generated method stub
-		return null;
+		return nombre;
 	}
 	@Override
 	public String getApellido() {
-		// TODO Auto-generated method stub
-		return null;
+		return apellido;
 	}
 	@Override
 	public long getDni() {
-		// TODO Auto-generated method stub
-		return 0;
+		return dni;
 	}
 	@Override
-	public void agregarTrabajadorACargo(ITrabajador trabajador) throws ExcepcionOperacionNoPermitida {
-		// TODO Auto-generated method stub
-		
+	public void agregarTrabajadorACargo(ITrabajador trabajador) throws ExcepcionOperacionNoPermitida {	
+		//if es un operario lanzar excepcion 
 	}
 	@Override
-	public void setJefe(ITrabajador jefe) {
-		// TODO Auto-generated method stub
-		
+	public void setJefe(ITrabajador jefe) {	
+		this.jefe=jefe;
 	}
 	@Override
 	public void setSalario(double salario) {
-		// TODO Auto-generated method stub
-		
+		cargo.setSalario(salario);
 	}
 	@Override
 	public double getSalario() {
-		// TODO Auto-generated method stub
-		return 0;
+		return cargo.getSalario();
 	}
 	@Override
 	public double getPremio() {
-		// TODO Auto-generated method stub
 		return 0;
+		//necesito implementar getmesesAntiguedad
 	}
 	@Override
 	public double getMontoACobrar() {
-		// TODO Auto-generated method stub
-		return 0;
+		return cargo.getSalario()+this.getPremio();
 	}
 	@Override
 	public int getCantidadEmpleadosACargoDirecto() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 	@Override
 	public int getCantidadEmpleadosACargoTotal() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
 }
