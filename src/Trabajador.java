@@ -15,6 +15,17 @@ public class Trabajador implements ITrabajador{
 		this.cargo=cargo;
 		this.fechaIngreso=fechaIngreso;
 	}
+	public Trabajador(long dni, String nombre, String apellido, TipoCargo cargo, Fecha fechaIngreso, String titulo,
+			String tituloPostgrado) {
+		super();
+		this.dni = dni;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.cargo = cargo;
+		this.fechaIngreso = fechaIngreso;
+		this.titulo = titulo;
+		this.titulop = tituloPostgrado;
+	}
 	@Override
 	public boolean esEmpleado() {
 		return (this.cargo.equals(TipoCargo.JEFES) ||this.cargo.equals(TipoCargo.SUPERVISOR)
