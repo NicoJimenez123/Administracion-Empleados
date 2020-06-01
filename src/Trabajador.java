@@ -106,4 +106,21 @@ public class Trabajador implements ITrabajador{
 	public int getCantidadEmpleadosACargoTotal() {
 		return 0;
 	}
+	@Override
+	public String toString() {
+		String s = "Nombre del Trabajador: "+this.getNombre()+
+				"\n"+"Apellido: "+this.getApellido()+"\n"+
+				"DNI: "+this.getDni()+"\n"+
+				"¿El trabajador es Empleado?: "+this.esEmpleado()+"\n"+
+				"¿El trabajador es Directivo?: "+this.esDirectivo()+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
+				"tiene "+this.getMesesAntiguedad()+" meses de antiguedad"+"\n"+
+				"¿Tiene titulo universitario?: "+this.tieneTituloUniversitario()+"\n"+
+				"Titulo Universitario: "+this.getTituloUniversitario()+"\n"+
+				"¿Tiene titulo de postgrado?: "+this.tieneTituloPostgrado()+"\n"+
+				"Titulo Postgrado: "+this.getTituloPostgrado()+"\n"+
+				"Salario: "+this.getSalario()+"\n"+
+				"Empleados a cargo (directamente): "+this.getCantidadEmpleadosACargoDirecto()+"\n"+
+				"Empleado a cargo (total): "+this.getCantidadEmpleadosACargoTotal();		 
+		return s;
+	}
 }
