@@ -1,3 +1,9 @@
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 public class Fecha{
     int dia;
     int mes;
@@ -57,7 +63,17 @@ public class Fecha{
     }
     
     public int calcularMeses() {
-    	return 0;
+    	  Calendar today = Calendar.getInstance();
+    	  Calendar fIngreso= Calendar.getInstance();
+    	  fIngreso.set(anio, mes-1, dia);
+          int difanio = today.get(Calendar.YEAR) -  fIngreso.get(Calendar.YEAR);
+          int difmeses = (difanio*12)+today.get(Calendar.MONTH) - fIngreso.get(Calendar.MONTH);
+          int difdia = today.get(Calendar.DAY_OF_MONTH) - fIngreso.get(Calendar.DAY_OF_MONTH);
+
+          
+         
+          return difmeses;
     }
+	
     
 }
