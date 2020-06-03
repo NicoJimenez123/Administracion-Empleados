@@ -1,13 +1,12 @@
-import ayp3.tp.ITrabajador;
-import ayp3.tp.TipoCargo;
 
-
-
+import ayp3.tp.*;
 
 public class Empresa implements IEmpresa{
     
     NodoTrabajador primero;
     NodoTrabajador ultimo;
+    NodoTrabajador primerDirectivo;
+    NodoTrabajador ultimoDirectivo;
     
     
     public Empresa() {
@@ -42,11 +41,28 @@ public class Empresa implements IEmpresa{
 
     @Override
     public void agregarDirectivo(ITrabajador trabajador) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Primero creo un nodo con el trabajador a insertar
+            NodoTrabajador nuevoTrabajador = new NodoTrabajador(trabajador);
+            // Me fijo si hay algun trabajador en la lista
+            if(this.primerDirectivo == null) {
+                    // Si no lo hay, tomo al nuevo trabajador y lo seteo como primero y ultimo en la lista
+                    this.primerDirectivo = nuevoTrabajador;
+                    this.ultimoDirectivo = nuevoTrabajador;
+            }
+            else {
+                    // Enlazo al nuevo trabajador con el ultimo en la lista
+                    this.ultimoDirectivo.setSiguiente(nuevoTrabajador);
+                    // Tambien enlazo al ultimo de la lista con el nuevo
+                    nuevoTrabajador.setAnterior(this.ultimoDirectivo);
+                    // Ahora el nuevo pasa a ser el ultimo
+                    this.ultimoDirectivo = nuevoTrabajador;
+            }
     }
 
     @Override
     public void quitarEmpleado(ITrabajador trabajador) {
+        
+        
         //verifico si la lista-empresa esta vacía
         if(this.primero==null){/*tirar exepcion*/}
         
@@ -65,7 +81,7 @@ public class Empresa implements IEmpresa{
                     este.setSiguiente(null);
                     este= previo.getSiguiente();
                 }                
-            }else{
+            }else{  //reacomodo los nodos para continuar con la iteración
                 previo=este;
                 este=este.getSiguiente();
             }
@@ -74,11 +90,36 @@ public class Empresa implements IEmpresa{
 
     @Override
     public void quitarDirectivo(ITrabajador trabajador) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
+        //verifico si la lista-empresa esta vacía
+        if(this.primerDirectivo==null){/*tirar exepcion*/}
+        
+        //creo los nodos que me serviran en la iteración
+        NodoTrabajador este= this.primero;  
+    	NodoTrabajador previo= null;  
+
+    	while(este!=null){
+            if(este.persona.equals(trabajador)){  //si el nodo "tocado" contiene al trabajador buscado
+                if(previo==null){   
+                    this.primero = this.primerDirectivo.getSiguiente();    
+                    este.setSiguiente(null);    
+                    este=this.primerDirectivo;  
+                }else{
+                    previo.setSiguiente(este.getSiguiente());
+                    este.setSiguiente(null);
+                    este= previo.getSiguiente();
+                }                
+            }else{  //reacomodo los nodos para continuar con la iteración
+                previo=este;
+                este=este.getSiguiente();
+            }
+        }
     }
 
     @Override
     public void quitarEmpleado(long dni) {
+        
+        
         //verifico si la lista-empresa esta vacía
         if(this.primero==null){/*tirar exepcion*/}
         
@@ -106,7 +147,28 @@ public class Empresa implements IEmpresa{
 
     @Override
     public void quitarDirectivo(long dni) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //verifico si la lista-empresa esta vacía
+        if(this.primerDirectivo==null){/*tirar exepcion*/}
+        
+        //creo los nodos que me serviran en la iteración
+        NodoTrabajador este= this.primerDirectivo;  
+    	NodoTrabajador previo= null;  
+
+    	while(este!=null){
+            if(este.persona.getDni()==(dni)){  //si el nodo "tocado" contiene al dni buscado
+                if(previo==null){   
+                    this.primerDirectivo = this.primerDirectivo.getSiguiente();    
+                    este.setSiguiente(null);    
+                    este=this.primerDirectivo;  
+                    previo.setSiguiente(este.getSiguiente());
+                    este.setSiguiente(null);
+                    este= previo.getSiguiente();
+                }                
+            }else{
+                previo=este;
+                este=este.getSiguiente();
+            }
+        }
     }
 
     @Override
@@ -116,21 +178,18 @@ public class Empresa implements IEmpresa{
         //recorro la pila hasta obtener el trabajador con el DNI buscado
         NodoTrabajador n = this.primero;
         while(n!=null){
-            if(n.persona.getDni()==dni){
-                trabajador=n.persona;
-            }
-            
+            if(n.persona.getDni()==dni){                
+                trabajador=n.persona;                
+            }            
             n=n.siguiente;
         }
-        
         return trabajador;
     }
 
     @Override
     public void liquidarSueldos() {
         //recorro la lista-empresa y seteo el atributo sueldo de cada trabajador 
-        ITrabajador trabajador = new Trabajador();        
-      
+        
         NodoTrabajador n = this.primero;
         while(n!=null){
             n.persona.setSalario(n.persona.getSalario() + n.persona.getMontoACobrar());
@@ -274,6 +333,8 @@ public class Empresa implements IEmpresa{
         
         return contador;
     }
+    
+    
     
     
     

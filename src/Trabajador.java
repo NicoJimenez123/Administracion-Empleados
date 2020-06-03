@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import ayp3.tp.*;
 public class Trabajador implements ITrabajador{
 	private long dni;
@@ -8,12 +11,14 @@ public class Trabajador implements ITrabajador{
 	private String titulo;
 	private String titulop;
 	private ITrabajador jefe;
+	private Empresa TrabajadoresACargo;
 	public Trabajador(long dni, String nombre, String apellido, TipoCargo cargo, Fecha fechaIngreso) {
 		this.dni=dni;
 		this.nombre=nombre;
 		this.apellido=apellido;
 		this.cargo=cargo;
 		this.fechaIngreso=fechaIngreso;
+		 TrabajadoresACargo=new Empresa();
 	}
 	public Trabajador(long dni, String nombre, String apellido, TipoCargo cargo, Fecha fechaIngreso, String titulo,
 			String tituloPostgrado) {
@@ -25,6 +30,7 @@ public class Trabajador implements ITrabajador{
 		this.fechaIngreso = fechaIngreso;
 		this.titulo = titulo;
 		this.titulop = tituloPostgrado;
+		TrabajadoresACargo=new Empresa();
 	}
 	@Override
 	public boolean esEmpleado() {
@@ -33,7 +39,8 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public boolean esDirectivo() {	
-		return (this.cargo.equals(TipoCargo.DIRECTOR_GENERAL)||this.cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO));
+		return (this.cargo.equals(TipoCargo.DIRECTOR_GENERAL)
+				||this.cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO));
 		
 	}
 	@Override
@@ -43,8 +50,6 @@ public class Trabajador implements ITrabajador{
 	@Override
 	public int getMesesAntiguedad() {
 		return fechaIngreso.calcularMeses();
-		//obtener fecha actual 
-		//calcular actual e ingreso
 	}
 	@Override
 	public void setTituloUniversitario(String titulo) {
@@ -60,8 +65,10 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public void setTituloPostgrado(String titulo) throws ExcepcionOperacionNoPermitida {
-		
-		
+		if(!this.tieneTituloUniversitario()) {
+			throw new ExcepcionOperacionNoPermitida ("Debe tener titulo universitario");
+		}
+		this.titulop=titulo;
 	}
 	@Override
 	public String getTituloPostgrado() {
@@ -85,8 +92,12 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public void agregarTrabajadorACargo(ITrabajador trabajador) throws ExcepcionOperacionNoPermitida {	
-		//if es un operario lanzar excepcion 
+		if(trabajador.equals(TipoCargo.OPERARIO)) {
+			throw new ExcepcionOperacionNoPermitida ("Un operario no puede tener trabajador a cargo");
+		}
+		TrabajadoresACargo.agregarEmpleado(trabajador);
 	}
+
 	@Override
 	public void setJefe(ITrabajador jefe) {	
 		this.jefe=jefe;
@@ -101,8 +112,42 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public double getPremio() {
-		return 0;
-		//necesito implementar getmesesAntiguedad
+		//$100000 a los directivos con, al menos, 12 meses de antigï¿½edad.
+		double premio=0;
+	if(cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL)
+			&& this.getMesesAntiguedad()>=12)	{
+		premio=cargo.getSalario()+100000;
+		// $50000 a los directivos sin un mï¿½nimo de 12 meses de antigï¿½edad.
+	} if (cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL)
+			&& this.getMesesAntiguedad()<12){
+		premio=cargo.getSalario()+50000;
+	}
+	// $60000 a los no directivos con, al menos, 12 meses de antigï¿½edad.
+		if(cargo.equals(TipoCargo.JEFES )||cargo.equals(TipoCargo.SUPERVISOR)||cargo.equals(TipoCargo.OPERARIO)
+			&& this.getMesesAntiguedad()>=12) {
+		premio=cargo.getSalario()+60000;
+	}// $30000 a los no directivos sin un mï¿½nimo de 12 meses de antigï¿½edad.
+		if(cargo.equals(TipoCargo.JEFES )||cargo.equals(TipoCargo.SUPERVISOR)||cargo.equals(TipoCargo.OPERARIO)
+			&& this.getMesesAntiguedad()<12) {
+		premio=cargo.getSalario()+30000;
+		// $15000 mï¿½s a los empleados con tï¿½tulo universitario.
+		}if(this.tieneTituloUniversitario()) {
+			premio=cargo.getSalario()+15000;
+		}
+		//$25000 mï¿½s a los empleados con tï¿½tulo de postgrado.
+		if(this.tieneTituloPostgrado()) {
+			premio=cargo.getSalario()+25000;
+			}
+		// $1000 mï¿½s por empleado a cargo directo
+			if(this.getCantidadEmpleadosACargoDirecto()>0) {
+				premio=cargo.getSalario()+(1000*this.getCantidadEmpleadosACargoDirecto());
+			}
+		//$500 mï¿½s por empleado a cargo indirecto
+			if(this.getCantidadEmpleadosACargoTotal()>0) {
+				premio=cargo.getSalario()+(500*this.getCantidadEmpleadosACargoTotal());
+			}
+		return premio;
+	
 	}
 	@Override
 	public double getMontoACobrar() {
@@ -110,7 +155,7 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public int getCantidadEmpleadosACargoDirecto() {
-		
+			
 		return 0;
 	}
 	@Override
@@ -122,12 +167,12 @@ public class Trabajador implements ITrabajador{
 		String s = "Nombre del Trabajador: "+this.getNombre()+
 				"\n"+"Apellido: "+this.getApellido()+"\n"+
 				"DNI: "+this.getDni()+"\n"+
-				"¿El trabajador es Empleado?: "+this.esEmpleado()+"\n"+
-				"¿El trabajador es Directivo?: "+this.esDirectivo()+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
+				"ï¿½El trabajador es Empleado?: "+this.esEmpleado()+"\n"+
+				"ï¿½El trabajador es Directivo?: "+this.esDirectivo()+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
 				"tiene "+this.getMesesAntiguedad()+" meses de antiguedad"+"\n"+
-				"¿Tiene titulo universitario?: "+this.tieneTituloUniversitario()+"\n"+
+				"ï¿½Tiene titulo universitario?: "+this.tieneTituloUniversitario()+"\n"+
 				"Titulo Universitario: "+this.getTituloUniversitario()+"\n"+
-				"¿Tiene titulo de postgrado?: "+this.tieneTituloPostgrado()+"\n"+
+				"ï¿½Tiene titulo de postgrado?: "+this.tieneTituloPostgrado()+"\n"+
 				"Titulo Postgrado: "+this.getTituloPostgrado()+"\n"+
 				"Salario: "+this.getSalario()+"\n"+
 				"Empleados a cargo (directamente): "+this.getCantidadEmpleadosACargoDirecto()+"\n"+
