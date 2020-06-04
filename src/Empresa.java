@@ -346,21 +346,21 @@ public class Empresa implements IEmpresa{
         return contador;
     }
     
-    public ArrayList<ITrabajador> obtenerListaTrabajadores() {
-    	ArrayList<ITrabajador> listaTrabajador = new ArrayList<ITrabajador>();
+    public void listarTrabajadores() {
     	// Recorro primero los directivos
     	NodoTrabajador d = this.primerDirectivo;
     	while(d != null) {
-    		listaTrabajador.add(d.getPersona());
+    		System.out.println(d.getPersona().toString());
+    		System.out.println();
     		d = d.getSiguiente();
     	}
     	// Ahora los empleados
     	NodoTrabajador e = this.primero;
     	while(e != null) {
-    		listaTrabajador.add(e.getPersona());
+    		System.out.println(e.getPersona().toString());
+    		System.out.println();
     		e = e.getSiguiente();
     	}
-    	return listaTrabajador;
     }
     
 }
