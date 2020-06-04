@@ -10,7 +10,7 @@ public class Principal {
 	static Fecha f=new Fecha(12,3,2015);
 	static Fecha fechaNico = new Fecha(25,3,2000);
 	static Trabajador trabajador=new Trabajador(12345, "Deby", "Villca",TipoCargo.DIRECTOR_DEPARTAMENTO,f );
-	static Trabajador nico = new Trabajador(123,"Nicolas", "Jimenez", TipoCargo.DIRECTOR_GENERAL, fechaNico, "APU", "Licenciado en la Administracion de la Mantisa");
+	static Trabajador nico = new Trabajador(123,"Nicolas", "Jimenez", TipoCargo.OPERARIO, fechaNico, "APU", "Licenciado en la Administracion de la Mantisa");
 	public static void main(String[] args) {
 		empresa.agregarTrabajador(nico);
 		empresa.agregarTrabajador(trabajador);
@@ -42,6 +42,7 @@ public class Principal {
 				break;
 			case 5:
 				modificarDatos();
+				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
 			System.out.println();
@@ -148,6 +149,8 @@ public class Principal {
     	long dni = ingresarDni();
     	int opcion = 0;
     	ITrabajador trabajador = empresa.obtenerTrabajador(dni);
+    	if(trabajador != null) {
+//    	ESTE MENU SE MOSTRARA SOLO SI EL TRABAJADOR ES DISTINTO DE NULL
     	boolean trabajadorEsDirectivo = trabajador.getCargo() == TipoCargo.DIRECTOR_DEPARTAMENTO || trabajador.getCargo() == TipoCargo.DIRECTOR_GENERAL;
     	do{
     		System.out.println("~~ Menu de Modificacion de Datos");
@@ -169,6 +172,9 @@ public class Principal {
     			System.out.println("Por Favor, Ingrese un numero");
     		}
     		switch(opcion) {
+    		case 0:
+    			break;
+    		/* Metodos a la espera de ser construidos
     		case 1:
     			trabajador.setDni(ingresarDni());
     			break;
@@ -184,6 +190,7 @@ public class Principal {
     		case 5:
     			trabajador.setFechaIngreso(ingresarFecha());
     			break;
+    		*/
     		case 6:
     			trabajador.setTituloUniversitario(Consola.pedirTexto("Ingrese el Titulo Universitario: "));
     			break;
@@ -192,7 +199,12 @@ public class Principal {
     				System.out.println("Solo los Directivos tienen titulo de Postgrado");
     			}
     			else {
-        			trabajador.setTituloPostgrado(Consola.pedirTexto("Ingrese el Titulo de Postgrado: "));
+        			try {
+						trabajador.setTituloPostgrado(Consola.pedirTexto("Ingrese el Titulo de Postgrado: "));
+					} catch (ExcepcionOperacionNoPermitida e) {
+						
+						e.printStackTrace();
+					}
     			}
     			break;
     		case 9:
@@ -202,6 +214,7 @@ public class Principal {
     			break;
     		}
     	}while(opcion != 9);
+    	}
     }
     /*
     public static void mostrarTrabajadores() {
