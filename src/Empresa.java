@@ -197,12 +197,21 @@ public class Empresa implements IEmpresa{
     public ITrabajador obtenerTrabajador(long dni) {
     	// Correccion al declarar esta variable
         ITrabajador trabajador = null;
-        
+       
         //recorro la pila hasta obtener el trabajador con el DNI buscado
-        NodoTrabajador n = this.primero;
+        NodoTrabajador n = this.primerDirectivo;
+//      Tambien hay que recorrer los directivos
         while(n!=null){
-            if(n.persona.getDni()==dni){                
-                trabajador=n.persona;                
+            if(n.getPersona().getDni()==dni){                
+                trabajador=n.getPersona();                
+            }            
+            n=n.siguiente;
+        }
+//      ahora recorro los empleados
+        n = this.primero;
+        while(n!=null){
+            if(n.getPersona().getDni()==dni){                
+                trabajador=n.getPersona();                
             }            
             n=n.siguiente;
         }
