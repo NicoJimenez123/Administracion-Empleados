@@ -7,12 +7,13 @@ import unpaz.ayp3.Consola;
 
 public class Principal {
 	static Empresa empresa = new Empresa();
+	static Fecha f=new Fecha(12,3,2015);
+	static Fecha fechaNico = new Fecha(25,3,2000);
+	static Trabajador trabajador=new Trabajador(12345, "Deby", "Villca",TipoCargo.DIRECTOR_DEPARTAMENTO,f );
+	static Trabajador nico = new Trabajador(123,"Nicolas", "Jimenez", TipoCargo.DIRECTOR_GENERAL, fechaNico, "APU", "Licenciado en la Administracion de la Mantisa");
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Fecha f=new Fecha(12,3,2015);
-		Fecha fechaNico = new Fecha(25,3,2000);
-		Trabajador trabajador=new Trabajador(12345, "Deby", "Villca",TipoCargo.DIRECTOR_DEPARTAMENTO,f );
-		Trabajador nico = new Trabajador(123,"Nicolas", "Jimenez", TipoCargo.DIRECTOR_GENERAL, fechaNico, "APU", "Licenciado en la Administracion de la Mantisa");
+		empresa.agregarTrabajador(nico);
+		empresa.agregarTrabajador(trabajador);
 		menu();
 		
 	}
@@ -23,6 +24,7 @@ public class Principal {
 			System.out.println("Opcion 1) Dar de Alta de un Trabajador.");
 			System.out.println("Opcion 2) Dar de Baja de un Trabajador.");
 			System.out.println("Opcion 3) Listar Trabajadores.");
+			System.out.println("Opcion 4) Listar Trabajadores por Nombre y DNI.");
 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
 			switch(opcion) {
 			case 1:
@@ -33,6 +35,9 @@ public class Principal {
 				break;
 			case 3:
 				empresa.listarTrabajadores();
+				break;
+			case 4:
+				empresa.listarNombresYDni();
 				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
@@ -56,7 +61,7 @@ public class Principal {
 		// Primero voy declarando las variables para usar el constructor de Trabajador
 		long dni;
 		int dia, mes, anio, opcionListaCargo = -1;
-		String nombre, apellido, titulo, tituloPostgrado;
+		String nombre, apellido, titulo, tituloPostgrado = null;
 		TipoCargo cargo = null;
 		Fecha fechaIngreso;
 		// Y voy rellenando las variables usando bloques try-
@@ -111,7 +116,10 @@ public class Principal {
 		}while(!fechaIngreso.comprobar_fecha());
 		// Ingreso los titulos del trabajador
 		titulo = Consola.pedirTexto("Ingrese el Titulo Universitario: ");
-		tituloPostgrado = Consola.pedirTexto("Ingrese el Titulo de Postgrado: ");
+		if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
+			// Al parecer, solo los directores necesitan almacenar el titulo de postgrado
+			tituloPostgrado = Consola.pedirTexto("Ingrese el Titulo de Postgrado: ");
+		}
 		// Creo un nuevo trabajador
 		ITrabajador trabajador = new Trabajador(dni,nombre,apellido,cargo,fechaIngreso,titulo,tituloPostgrado);
 		// Retorno la instancia del nuevo trabajador
@@ -126,9 +134,6 @@ public class Principal {
     	}
     }
     
-    public static void mostrarPorTipo() {
-    	
-    }
     /*
     public static void mostrarTrabajadores() {
     	// HACER ESTE METODO EN LA CLASE EMPRESA
