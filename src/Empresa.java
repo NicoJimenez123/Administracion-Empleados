@@ -34,11 +34,6 @@ public class Empresa implements IEmpresa{
             }
     }
     
-    
-    
-    
-    
-
     @Override
     public void agregarDirectivo(ITrabajador trabajador) {
         // Primero creo un nodo con el trabajador a insertar
@@ -59,6 +54,19 @@ public class Empresa implements IEmpresa{
             }
     }
 
+    public void quitarTrabajador(long dni) {
+    	// Creo este metodo para no tener que llamar a varios metodos desde el main
+    	// Desde el main tengo que controlar que el DNI sea valido
+    	ITrabajador trabajador = this.obtenerTrabajador(dni);
+    	TipoCargo cargo = trabajador.getCargo();
+    	if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
+    		this.quitarDirectivo(trabajador);
+    	}
+    	else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
+    		this.quitarEmpleado(trabajador);    		
+    	}
+    }
+    
     @Override
     public void quitarEmpleado(ITrabajador trabajador) {
         
@@ -173,7 +181,8 @@ public class Empresa implements IEmpresa{
 
     @Override
     public ITrabajador obtenerTrabajador(long dni) {
-        ITrabajador trabajador = new Trabajador();
+    	// Correccion al declarar esta variable
+        ITrabajador trabajador = null;
         
         //recorro la pila hasta obtener el trabajador con el DNI buscado
         NodoTrabajador n = this.primero;
