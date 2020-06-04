@@ -16,6 +16,17 @@ public class Empresa implements IEmpresa{
             this.primero = null;
     }
     
+    public void agregarTrabajador(ITrabajador trabajador) {
+    	// Creo este metodo para no tener que llamar a varios metodos desde el main
+    	// Desde el main tengo que controlar que el DNI sea valido
+    	TipoCargo cargo = trabajador.getCargo();
+    	if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
+    		this.agregarDirectivo(trabajador);
+    	}
+    	else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
+    		this.agregarEmpleado(trabajador);    		
+    	}
+    }
     
     @Override
     public void agregarEmpleado(ITrabajador trabajador) {
@@ -358,6 +369,22 @@ public class Empresa implements IEmpresa{
     	NodoTrabajador e = this.primero;
     	while(e != null) {
     		System.out.println(e.getPersona().toString());
+    		System.out.println();
+    		e = e.getSiguiente();
+    	}
+    }
+    public void listarNombresYDni() {
+    	// Recorro primero los directivos
+    	NodoTrabajador d = this.primerDirectivo;
+    	while(d != null) {
+    		System.out.println(d.getPersona().getNombre()+" "+d.getPersona().getApellido()+" "+d.getPersona().getDni());
+    		System.out.println();
+    		d = d.getSiguiente();
+    	}
+    	// Ahora los empleados
+    	NodoTrabajador e = this.primero;
+    	while(e != null) {
+    		System.out.println(e.getPersona().getNombre()+" "+e.getPersona().getApellido()+" "+e.getPersona().getDni());
     		System.out.println();
     		e = e.getSiguiente();
     	}
