@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import ayp3.tp.ExcepcionOperacionNoPermitida;
 import ayp3.tp.ITrabajador;
 import ayp3.tp.TipoCargo;
@@ -16,15 +18,39 @@ public class Principal {
 	}
 	public static void menu() {
 		while(true) {
-			ITrabajador t;
+			System.out.println();
 			System.out.println("~~ Menu de Alta de Trabajadores ~~");
 			System.out.println("Opcion 1) Dar de Alta de un Trabajador.");
+			System.out.println("Opcion 2) Dar de Baja de un Trabajador.");
+			System.out.println("Opcion 3) Listar Trabajadores.");
 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
 			switch(opcion) {
-			case 1:t= altaTrabajador();System.out.println(t.toString());break;
+			case 1:
+				empresa.agregarEmpleado(altaTrabajador());
+				break;
+			case 2:
+				empresa.quitarEmpleado(quitarEmpleado());
+				break;
+			case 3:
+				empresa.listarTrabajadores();
+				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
+			System.out.println();
 		}
+	}
+	private static long quitarEmpleado() {
+		long dni;
+		while(true) {
+			try {
+				dni = Consola.pedirEntero("Ingrese el Numero de DNI: ");
+				break;
+			}
+			catch(Exception e) {
+				System.out.println("Por favor, Ingrese el Numero de DNI correspondiente.");
+			}
+		}
+		return dni;
 	}
 	public static ITrabajador altaTrabajador() {
 		// Primero voy declarando las variables para usar el constructor de Trabajador
@@ -48,6 +74,7 @@ public class Principal {
 		
 		// Acá creo una lista con los diferentes tipos de cargos
 		TipoCargo[] listaDeCargos = TipoCargo.values();
+		listarCargos();
 		do{
 			try {
 				// Al estar listados solo hay que ingresar el numero correspondiente a cada cargo.
@@ -102,6 +129,14 @@ public class Principal {
     public static void mostrarPorTipo() {
     	
     }
+    /*
+    public static void mostrarTrabajadores() {
+    	// HACER ESTE METODO EN LA CLASE EMPRESA
+    	ArrayList<ITrabajador> listaTrabajadores = empresa.obtenerListaTrabajadores();
+    	for(ITrabajador trabajador : listaTrabajadores) {
+    		System.out.println(trabajador.toString());
+    	}
+    }*/
 }
 
 
