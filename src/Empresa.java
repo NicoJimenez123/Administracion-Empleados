@@ -1,4 +1,7 @@
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import ayp3.tp.*;
 
 public class Empresa implements IEmpresa{
@@ -343,8 +346,26 @@ public class Empresa implements IEmpresa{
         return contador;
     }
     
-    
-    
-    
+    public ArrayList<ITrabajador> obtenerListaTrabajadores() {
+    	ArrayList<ITrabajador> listaTrabajador = new ArrayList<ITrabajador>();
+    	// Recorro primero los directivos
+    	NodoTrabajador d = this.primerDirectivo;
+    	while(d != null) {
+    		listaTrabajador.add(d.getPersona());
+    		d = d.getSiguiente();
+    	}
+    	// Ahora los empleados
+    	NodoTrabajador e = this.primero;
+    	while(e != null) {
+    		listaTrabajador.add(e.getPersona());
+    		e = e.getSiguiente();
+    	}
+    	return listaTrabajador;
+    }
     
 }
+
+
+
+
+
