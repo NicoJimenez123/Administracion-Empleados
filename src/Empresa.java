@@ -236,14 +236,20 @@ public class Empresa implements IEmpresa{
         double contador=0;
         
 //        ITrabajador trabajador = new Trabajador();        
-      
-        NodoTrabajador n = this.primero;
+//       Primero recorro a los directivos
+        NodoTrabajador n = this.primerDirectivo;
         while(n!=null){
             contador += n.persona.getMontoACobrar();
             
             n=n.siguiente;
         }  
-        
+//        Ahora a los empleados
+        n = this.primero;
+        while(n!=null){
+            contador += n.persona.getMontoACobrar();
+            
+            n=n.siguiente;
+        }
         return contador;
     }
 
