@@ -235,7 +235,7 @@ public class Empresa implements IEmpresa{
         //recorro la lista-empresa y sumo los montos a pagar
         double contador=0;
         
-        ITrabajador trabajador = new Trabajador();        
+//        ITrabajador trabajador = new Trabajador();        
       
         NodoTrabajador n = this.primero;
         while(n!=null){
@@ -437,13 +437,14 @@ public class Empresa implements IEmpresa{
     			d = d.getSiguiente();
     		}    		
     	}
-    	listaTrabajadores.addAll(directorDepartamento);
     	listaTrabajadores.addAll(directorGeneral);
+    	listaTrabajadores.addAll(directorDepartamento);
     	listaTrabajadores.addAll(jefes);
     	listaTrabajadores.addAll(supervisor);
     	listaTrabajadores.addAll(operario);
     	for(ITrabajador t : listaTrabajadores) {
     		System.out.println(t);
+    		System.out.println();
     	}
     }
 }
