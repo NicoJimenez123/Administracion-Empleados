@@ -26,6 +26,8 @@ public class Principal {
 			System.out.println("Opcion 3) Listar Trabajadores.");
 			System.out.println("Opcion 4) Listar Trabajadores por Nombre y DNI.");
 			System.out.println("Opcion 5) Modificar Datos de un Trabajador.");
+			System.out.println("Opcion 6) Listar Trabajadores por Tipo de Cargo");
+			System.out.println("Opcion 7) Calcular Total de Salarios a Pagar");
 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
 			switch(opcion) {
 			case 1:
@@ -42,6 +44,13 @@ public class Principal {
 				break;
 			case 5:
 				modificarDatos();
+				break;
+			case 6:
+				empresa.listaPorTipoCargo();
+				break;
+			case 7:
+				Double m = empresa.obtenerMontoTotalAPagar();
+				System.out.println("Se debe Pagar $"+m+" en Salarios");
 				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
