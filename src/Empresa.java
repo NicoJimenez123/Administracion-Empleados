@@ -399,6 +399,53 @@ public class Empresa implements IEmpresa{
     	}
     }
     
+    public void listaPorTipoCargo() {
+    	ArrayList<ITrabajador> directorGeneral = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> directorDepartamento = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> jefes = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> supervisor = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> operario = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> listaTrabajadores = new ArrayList<ITrabajador>();
+    	// Primero recorro los directores
+    	NodoTrabajador d = this.primerDirectivo;
+    	boolean empleadosRecorridos = false;
+    	while(d != null) {
+    		TipoCargo cargoTrabajador = d.getPersona().getCargo();
+    		if(cargoTrabajador == TipoCargo.DIRECTOR_DEPARTAMENTO) {
+    			directorDepartamento.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.DIRECTOR_GENERAL) {
+    			directorGeneral.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.JEFES) {
+    			jefes.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.SUPERVISOR) {
+    			supervisor.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.OPERARIO) {
+    			operario.add(d.getPersona());
+    		}
+    		if(d.getSiguiente() == null) {
+    			if(empleadosRecorridos) {
+    				break;
+    			}
+    			d = this.primero;
+    			empleadosRecorridos = true;
+    		}
+    		else {
+    			d = d.getSiguiente();
+    		}    		
+    	}
+    	listaTrabajadores.addAll(directorDepartamento);
+    	listaTrabajadores.addAll(directorGeneral);
+    	listaTrabajadores.addAll(jefes);
+    	listaTrabajadores.addAll(supervisor);
+    	listaTrabajadores.addAll(operario);
+    	for(ITrabajador t : listaTrabajadores) {
+    		System.out.println(t);
+    	}
+    }
 }
 
 
