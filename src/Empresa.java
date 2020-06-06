@@ -294,6 +294,14 @@ public class Empresa implements IEmpresa{
         
         return trabajadorMaximo;
     }
+    
+    public double obtenerSalarioMinimo() {
+    	return this.obtenerTrabajadorSalarioMinimo().getSalario();
+    }
+    
+    public double obtenerSalarioMaximo() {
+    	return this.obtenerTrabajadorSalarioMaximo().getSalario();
+    }
 
     @Override
     public double obtenerPromedioSalarios() {
