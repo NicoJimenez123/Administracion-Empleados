@@ -386,9 +386,45 @@ public class Empresa implements IEmpresa{
         }  
         
     }
+
     
     
-    
-    
+    public void listarTrabajadores() {
+        // Recorro primero los directivos
+        NodoTrabajador d = this.primerDirectivo;
+        while(d != null) {
+            System.out.println(d.getPersona().toString());
+            System.out.println();
+            d = d.getSiguiente();
+        }
+        // Ahora los empleados
+        NodoTrabajador e = this.primero;
+        while(e != null) {
+            System.out.println(e.getPersona().toString());
+            System.out.println();
+            e = e.getSiguiente();
+        }
+    }
+    public void listarNombresYDni() {
+        // Recorro primero los directivos
+        NodoTrabajador d = this.primerDirectivo;
+        while(d != null) {
+            System.out.println(d.getPersona().getNombre()+" "+d.getPersona().getApellido()+" "+d.getPersona().getDni());
+            System.out.println();
+            d = d.getSiguiente();
+        }
+        // Ahora los empleados
+        NodoTrabajador e = this.primero;
+        while(e != null) {
+            System.out.println(e.getPersona().getNombre()+" "+e.getPersona().getApellido()+" "+e.getPersona().getDni());
+            System.out.println();
+            e = e.getSiguiente();
+        }
+    }
     
 }
+
+
+
+
+
