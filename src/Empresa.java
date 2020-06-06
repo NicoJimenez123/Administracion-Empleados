@@ -387,7 +387,7 @@ public class Empresa implements IEmpresa{
         
     }
 
-    
+
     
     public void listarTrabajadores() {
         // Recorro primero los directivos
@@ -421,6 +421,13 @@ public class Empresa implements IEmpresa{
             e = e.getSiguiente();
         }
     }
+    
+
+
+
+
+
+
     
 }
 
