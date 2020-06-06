@@ -1,5 +1,7 @@
 
-//package trabajadores;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import ayp3.tp.*;
 
 public class Empresa2 implements IEmpresa{
@@ -15,15 +17,15 @@ public class Empresa2 implements IEmpresa{
     }
     
     public void agregarTrabajador(ITrabajador trabajador) {
-        // Creo este metodo para no tener que llamar a varios metodos desde el main
-        // Desde el main tengo que controlar que el DNI sea valido
-        TipoCargo cargo = trabajador.getCargo();
-        if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
-            this.agregarDirectivo(trabajador);
-        }
-        else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
-            this.agregarEmpleado(trabajador);           
-        }
+    	// Creo este metodo para no tener que llamar a varios metodos desde el main
+    	// Desde el main tengo que controlar que el DNI sea valido
+    	TipoCargo cargo = trabajador.getCargo();
+    	if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
+    		this.agregarDirectivo(trabajador);
+    	}
+    	else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
+    		this.agregarEmpleado(trabajador);    		
+    	}
     }
     
     @Override
@@ -46,11 +48,6 @@ public class Empresa2 implements IEmpresa{
             }
     }
     
-    
-    
-    
-    
-
     @Override
     public void agregarDirectivo(ITrabajador trabajador) {
         // Primero creo un nodo con el trabajador a insertar
@@ -70,18 +67,18 @@ public class Empresa2 implements IEmpresa{
                     this.ultimoDirectivo = nuevoTrabajador;
             }
     }
-    
+
     public void quitarTrabajador(long dni) {
-        // Creo este metodo para no tener que llamar a varios metodos desde el main
-        // Desde el main tengo que controlar que el DNI sea valido
-        ITrabajador trabajador = this.obtenerTrabajador(dni);
-        TipoCargo cargo = trabajador.getCargo();
-        if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
-            this.quitarDirectivo(trabajador);
-        }
-        else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
-            this.quitarEmpleado(trabajador);            
-        }
+    	// Creo este metodo para no tener que llamar a varios metodos desde el main
+    	// Desde el main tengo que controlar que el DNI sea valido
+    	ITrabajador trabajador = this.obtenerTrabajador(dni);
+    	TipoCargo cargo = trabajador.getCargo();
+    	if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
+    		this.quitarDirectivo(trabajador);
+    	}
+    	else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
+    		this.quitarEmpleado(trabajador);    		
+    	}
     }
     
     @Override
@@ -93,9 +90,9 @@ public class Empresa2 implements IEmpresa{
         
         //creo los nodos que me serviran en la iteración
         NodoTrabajador este= this.primero;  
-        NodoTrabajador previo= null;  
+    	NodoTrabajador previo= null;  
 
-        while(este!=null){
+    	while(este!=null){
             if(este.persona.equals(trabajador)){  //si el nodo "tocado" contiene al trabajador buscado
                 if(previo==null){   
                     this.primero = this.primero.getSiguiente();    
@@ -121,9 +118,9 @@ public class Empresa2 implements IEmpresa{
         
         //creo los nodos que me serviran en la iteración
         NodoTrabajador este= this.primero;  
-        NodoTrabajador previo= null;  
+    	NodoTrabajador previo= null;  
 
-        while(este!=null){
+    	while(este!=null){
             if(este.persona.equals(trabajador)){  //si el nodo "tocado" contiene al trabajador buscado
                 if(previo==null){   
                     this.primero = this.primerDirectivo.getSiguiente();    
@@ -150,9 +147,9 @@ public class Empresa2 implements IEmpresa{
         
         //creo los nodos que me serviran en la iteración
         NodoTrabajador este= this.primero;  
-        NodoTrabajador previo= null;  
+    	NodoTrabajador previo= null;  
 
-        while(este!=null){
+    	while(este!=null){
             if(este.persona.getDni()==(dni)){  //si el nodo "tocado" contiene al dni buscado
                 if(previo==null){   
                     this.primero = this.primero.getSiguiente();    
@@ -177,9 +174,9 @@ public class Empresa2 implements IEmpresa{
         
         //creo los nodos que me serviran en la iteración
         NodoTrabajador este= this.primerDirectivo;  
-        NodoTrabajador previo= null;  
+    	NodoTrabajador previo= null;  
 
-        while(este!=null){
+    	while(este!=null){
             if(este.persona.getDni()==(dni)){  //si el nodo "tocado" contiene al dni buscado
                 if(previo==null){   
                     this.primerDirectivo = this.primerDirectivo.getSiguiente();    
@@ -198,19 +195,20 @@ public class Empresa2 implements IEmpresa{
 
     @Override
     public ITrabajador obtenerTrabajador(long dni) {
+    	// Correccion al declarar esta variable
         ITrabajador trabajador = null;
-        
-        //recorro la pila de empleados hasta obtener el trabajador con el DNI buscado
-        NodoTrabajador n = this.primero;
+       
+        //recorro la pila hasta obtener el trabajador con el DNI buscado
+        NodoTrabajador n = this.primerDirectivo;
+//      Tambien hay que recorrer los directivos
         while(n!=null){
             if(n.getPersona().getDni()==dni){                
                 trabajador=n.getPersona();                
             }            
             n=n.siguiente;
         }
-        
-        //recorro la pila de directivos hasta obtener el trabajador con el DNI buscado
-        n = this.primerDirectivo;
+//      ahora recorro los empleados
+        n = this.primero;
         while(n!=null){
             if(n.getPersona().getDni()==dni){                
                 trabajador=n.getPersona();                
@@ -222,22 +220,14 @@ public class Empresa2 implements IEmpresa{
 
     @Override
     public void liquidarSueldos() {
-        /*
-          Creé el atributo Double montoACobrar en la clase trabajador
-          Creé el setter en la interfaz ITrabajador y la clase de Trabajador
-          Al crearse un empleado se setea el atributo montoACobrar
-          montoACobrar = trabajador.premio + trabajador.sueldo
-          Al liquidarse los sueldos, se setea el atributo montoACobrar a 0
-        */
+        //recorro la lista-empresa y seteo el atributo sueldo de cada trabajador 
         
         NodoTrabajador n = this.primero;
         while(n!=null){
-            n.persona.setMontoACobrar(0);
+            n.persona.setSalario(n.persona.getSalario() + n.persona.getMontoACobrar());
             
             n=n.siguiente;
-        }    
-        
-        
+        }                
     }
 
     @Override
@@ -245,15 +235,21 @@ public class Empresa2 implements IEmpresa{
         //recorro la lista-empresa y sumo los montos a pagar
         double contador=0;
         
-        ITrabajador trabajador = new Trabajador();        
-      
-        NodoTrabajador n = this.primero;
+//        ITrabajador trabajador = new Trabajador();        
+//       Primero recorro a los directivos
+        NodoTrabajador n = this.primerDirectivo;
         while(n!=null){
             contador += n.persona.getMontoACobrar();
             
             n=n.siguiente;
         }  
-        
+//        Ahora a los empleados
+        n = this.primero;
+        while(n!=null){
+            contador += n.persona.getMontoACobrar();
+            
+            n=n.siguiente;
+        }
         return contador;
     }
 
@@ -318,9 +314,9 @@ public class Empresa2 implements IEmpresa{
     public ITrabajador obtenerTrabajadorMasAntiguo() {
         //recorro la lista-empresa chequeo cada antiguedad
         double maximo=0;   
-        ITrabajador trabajadorMaximo = null; //guarda al trabajador con mayor antiguedad
+        ITrabajador trabajadorMaximo = new Trabajador(); //guarda al trabajador con mayor antiguedad
         
-             
+        ITrabajador trabajador = new Trabajador();   //para la iteración      
       
         NodoTrabajador n = this.primero;
         while(n!=null){
@@ -358,77 +354,105 @@ public class Empresa2 implements IEmpresa{
     public void mostrarNombres(){ //muestra los nombres de los trabjadores dentro de la lista
         NodoTrabajador n = this.primero;
 
-        while(n != null){
-            System.out.println(n.persona.getNombre()+", ");
-            n=n.siguiente;
-        }
+    	while(n != null){
+    		System.out.println(n.persona.getNombre()+", ");
+    		n=n.siguiente;
+    	}
     }
     
     public int longitud(){  //calcula la cantidad de nodos de la lista
         int contador=0;
         NodoTrabajador n = this.primero;
 
-        while(n != null){
-            contador++;
+    	while(n != null){
+    		contador++;
                 n=n.siguiente;
-        }        
+    	}        
         
         return contador;
     }
     
-    public void definirMontoACobrarDeTodos(){
-        NodoTrabajador n = this.primero;
-        while(n!=null){
-            n.persona.setMontoACobrar(n.persona.getSalario() + n.persona.getPremio());
-            /*test*/ System.out.println("Monto a cobrar de "+n.persona.getNombre()+": "+(n.persona.getSalario() + n.persona.getPremio()));
-            
-            n=n.siguiente;
-        }  
-        
-    }
-
-
-    
     public void listarTrabajadores() {
-        // Recorro primero los directivos
-        NodoTrabajador d = this.primerDirectivo;
-        while(d != null) {
-            System.out.println(d.getPersona().toString());
-            System.out.println();
-            d = d.getSiguiente();
-        }
-        // Ahora los empleados
-        NodoTrabajador e = this.primero;
-        while(e != null) {
-            System.out.println(e.getPersona().toString());
-            System.out.println();
-            e = e.getSiguiente();
-        }
+    	// Recorro primero los directivos
+    	NodoTrabajador d = this.primerDirectivo;
+    	while(d != null) {
+    		System.out.println(d.getPersona().toString());
+    		System.out.println();
+    		d = d.getSiguiente();
+    	}
+    	// Ahora los empleados
+    	NodoTrabajador e = this.primero;
+    	while(e != null) {
+    		System.out.println(e.getPersona().toString());
+    		System.out.println();
+    		e = e.getSiguiente();
+    	}
     }
     public void listarNombresYDni() {
-        // Recorro primero los directivos
-        NodoTrabajador d = this.primerDirectivo;
-        while(d != null) {
-            System.out.println(d.getPersona().getNombre()+" "+d.getPersona().getApellido()+" "+d.getPersona().getDni());
-            System.out.println();
-            d = d.getSiguiente();
-        }
-        // Ahora los empleados
-        NodoTrabajador e = this.primero;
-        while(e != null) {
-            System.out.println(e.getPersona().getNombre()+" "+e.getPersona().getApellido()+" "+e.getPersona().getDni());
-            System.out.println();
-            e = e.getSiguiente();
-        }
+    	// Recorro primero los directivos
+    	NodoTrabajador d = this.primerDirectivo;
+    	while(d != null) {
+    		System.out.println(d.getPersona().getNombre()+" "+d.getPersona().getApellido()+" "+d.getPersona().getDni());
+    		System.out.println();
+    		d = d.getSiguiente();
+    	}
+    	// Ahora los empleados
+    	NodoTrabajador e = this.primero;
+    	while(e != null) {
+    		System.out.println(e.getPersona().getNombre()+" "+e.getPersona().getApellido()+" "+e.getPersona().getDni());
+    		System.out.println();
+    		e = e.getSiguiente();
+    	}
     }
     
-
-
-
-
-
-
-    
+    public void listaPorTipoCargo() {
+    	ArrayList<ITrabajador> directorGeneral = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> directorDepartamento = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> jefes = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> supervisor = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> operario = new ArrayList<ITrabajador>();
+    	ArrayList<ITrabajador> listaTrabajadores = new ArrayList<ITrabajador>();
+    	// Primero recorro los directores
+    	NodoTrabajador d = this.primerDirectivo;
+    	boolean empleadosRecorridos = false;
+    	while(d != null) {
+    		TipoCargo cargoTrabajador = d.getPersona().getCargo();
+    		if(cargoTrabajador == TipoCargo.DIRECTOR_DEPARTAMENTO) {
+    			directorDepartamento.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.DIRECTOR_GENERAL) {
+    			directorGeneral.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.JEFES) {
+    			jefes.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.SUPERVISOR) {
+    			supervisor.add(d.getPersona());
+    		}
+    		if(cargoTrabajador == TipoCargo.OPERARIO) {
+    			operario.add(d.getPersona());
+    		}
+    		if(d.getSiguiente() == null) {
+    			if(empleadosRecorridos) {
+    				break;
+    			}
+    			d = this.primero;
+    			empleadosRecorridos = true;
+    		}
+    		else {
+    			d = d.getSiguiente();
+    		}    		
+    	}
+    	listaTrabajadores.addAll(directorGeneral);
+    	listaTrabajadores.addAll(directorDepartamento);
+    	listaTrabajadores.addAll(jefes);
+    	listaTrabajadores.addAll(supervisor);
+    	listaTrabajadores.addAll(operario);
+    	for(ITrabajador t : listaTrabajadores) {
+    		System.out.println(t);
+    		System.out.println();
+    	}
+    }
 }
 
 
