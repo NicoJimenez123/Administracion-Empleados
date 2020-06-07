@@ -11,14 +11,15 @@ public class Trabajador implements ITrabajador{
 	private String titulo;
 	private String titulop;
 	private ITrabajador jefe;
-	private Empresa TrabajadoresACargo;
+	private List <ITrabajador> TrabajadoresACargo;
+	private double MontoACobrar;
 	public Trabajador(long dni, String nombre, String apellido, TipoCargo cargo, Fecha fechaIngreso) {
 		this.dni=dni;
 		this.nombre=nombre;
 		this.apellido=apellido;
 		this.cargo=cargo;
 		this.fechaIngreso=fechaIngreso;
-		 TrabajadoresACargo=new Empresa();
+		 TrabajadoresACargo=new ArrayList<>();
 	}
 	public Trabajador(long dni, String nombre, String apellido, TipoCargo cargo, Fecha fechaIngreso, String titulo,
 			String tituloPostgrado) {
@@ -30,7 +31,7 @@ public class Trabajador implements ITrabajador{
 		this.fechaIngreso = fechaIngreso;
 		this.titulo = titulo;
 		this.titulop = tituloPostgrado;
-		TrabajadoresACargo=new Empresa();
+		TrabajadoresACargo=new ArrayList<>();
 	}
 	@Override
 	public boolean esEmpleado() {
@@ -92,10 +93,10 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public void agregarTrabajadorACargo(ITrabajador trabajador) throws ExcepcionOperacionNoPermitida {	
-		if(trabajador.equals(TipoCargo.OPERARIO)) {
+		if(trabajador.getCargo().equals(TipoCargo.OPERARIO)) {
 			throw new ExcepcionOperacionNoPermitida ("Un operario no puede tener trabajador a cargo");
 		}
-		TrabajadoresACargo.agregarEmpleado(trabajador);
+		TrabajadoresACargo.add(trabajador);
 	}
 
 	@Override
@@ -112,40 +113,34 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public double getPremio() {
-		//$100000 a los directivos con, al menos, 12 meses de antig�edad.
-		double premio=0;
-	if(cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL)
-			&& this.getMesesAntiguedad()>=12)	{
-		premio=cargo.getSalario()+100000;
-		// $50000 a los directivos sin un m�nimo de 12 meses de antig�edad.
-	} if (cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL)
-			&& this.getMesesAntiguedad()<12){
-		premio=cargo.getSalario()+50000;
-	}
-	// $60000 a los no directivos con, al menos, 12 meses de antig�edad.
-		if(cargo.equals(TipoCargo.JEFES )||cargo.equals(TipoCargo.SUPERVISOR)||cargo.equals(TipoCargo.OPERARIO)
-			&& this.getMesesAntiguedad()>=12) {
-		premio=cargo.getSalario()+60000;
-	}// $30000 a los no directivos sin un m�nimo de 12 meses de antig�edad.
-		if(cargo.equals(TipoCargo.JEFES )||cargo.equals(TipoCargo.SUPERVISOR)||cargo.equals(TipoCargo.OPERARIO)
-			&& this.getMesesAntiguedad()<12) {
-		premio=cargo.getSalario()+30000;
-		// $15000 m�s a los empleados con t�tulo universitario.
-		}if(this.tieneTituloUniversitario()) {
-			premio=cargo.getSalario()+15000;
+		boolean esDirectivo = cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL);
+		boolean esEmpleado = cargo.equals(TipoCargo.JEFES) || cargo.equals(TipoCargo.SUPERVISOR) || cargo.equals(TipoCargo.OPERARIO);
+		double premio = 0;
+		
+		if (esDirectivo && this.getMesesAntiguedad() >= 12) {
+			premio += 100000;
 		}
-		//$25000 m�s a los empleados con t�tulo de postgrado.
-		if(this.tieneTituloPostgrado()) {
-			premio=cargo.getSalario()+25000;
-			}
-		// $1000 m�s por empleado a cargo directo
-			if(this.getCantidadEmpleadosACargoDirecto()>0) {
-				premio=cargo.getSalario()+(1000*this.getCantidadEmpleadosACargoDirecto());
-			}
-		//$500 m�s por empleado a cargo indirecto
-			if(this.getCantidadEmpleadosACargoTotal()>0) {
-				premio=cargo.getSalario()+(500*this.getCantidadEmpleadosACargoTotal());
-			}
+			if (esDirectivo && this.getMesesAntiguedad() < 12) {
+			premio += 50000;
+		}
+		if (esEmpleado && this.getMesesAntiguedad() >= 12) {
+			premio += 60000;
+		}
+		if (esEmpleado && this.getMesesAntiguedad() < 12) {
+			premio += 30000;
+		}
+		if (this.tieneTituloUniversitario()) {
+			premio += 15000;
+		}
+		if (this.tieneTituloPostgrado()) {
+			premio += 25000;
+		}
+		if (this.getCantidadEmpleadosACargoDirecto() > 0) {
+			premio += (1000 * this.getCantidadEmpleadosACargoDirecto());
+		}
+		if (this.getCantidadEmpleadosACargoTotal() > 0) {
+			premio += (500 * this.getCantidadEmpleadosACargoTotal());
+		}
 		return premio;
 	
 	}
@@ -153,30 +148,65 @@ public class Trabajador implements ITrabajador{
 	public double getMontoACobrar() {
 		return cargo.getSalario()+this.getPremio();
 	}
+
 	@Override
 	public int getCantidadEmpleadosACargoDirecto() {
-			
-		return 0;
+		if(cargo.equals(TipoCargo.OPERARIO)) {
+			return 0;
+		}
+	
+		return this.TrabajadoresACargo.size();
 	}
 	@Override
 	public int getCantidadEmpleadosACargoTotal() {
 		return 0;
+		
 	}
 	@Override
 	public String toString() {
 		String s = "Nombre del Trabajador: "+this.getNombre()+
 				"\n"+"Apellido: "+this.getApellido()+"\n"+
 				"DNI: "+this.getDni()+"\n"+
-				"�El trabajador es Empleado?: "+this.esEmpleado()+"\n"+
-				"�El trabajador es Directivo?: "+this.esDirectivo()+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
+				" trabajador es Empleado?: "+this.esEmpleado()+"\n"+
+				"El trabajador es Directivo?: "+this.esDirectivo()+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
 				"tiene "+this.getMesesAntiguedad()+" meses de antiguedad"+"\n"+
-				"�Tiene titulo universitario?: "+this.tieneTituloUniversitario()+"\n"+
+				"Tiene titulo universitario?: "+this.tieneTituloUniversitario()+"\n"+
 				"Titulo Universitario: "+this.getTituloUniversitario()+"\n"+
-				"�Tiene titulo de postgrado?: "+this.tieneTituloPostgrado()+"\n"+
+				"Tiene titulo de postgrado?: "+this.tieneTituloPostgrado()+"\n"+
 				"Titulo Postgrado: "+this.getTituloPostgrado()+"\n"+
 				"Salario: "+this.getSalario()+"\n"+
 				"Empleados a cargo (directamente): "+this.getCantidadEmpleadosACargoDirecto()+"\n"+
 				"Empleado a cargo (total): "+this.getCantidadEmpleadosACargoTotal();		 
 		return s;
 	}
+	public void setMontoACobrar(double d) {
+		this.MontoACobrar=d;
+		
+	}
+	public void setDni(long dni) {
+		this.dni = dni;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+	public void setCargo(TipoCargo cargo) {
+		this.cargo = cargo;
+	}
+	public void setFechaIngreso(Fecha fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	public void setTitulop(String titulop) {
+		this.titulop = titulop;
+	}
+	public void setTrabajadoresACargo(List<ITrabajador> trabajadoresACargo) {
+		TrabajadoresACargo = trabajadoresACargo;
+	}
+	
+	
 }
