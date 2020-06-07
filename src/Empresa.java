@@ -308,13 +308,12 @@ public class Empresa implements IEmpresa{
         //recorro la lista-empresa chequeo cada salario
         double sumatoria=0;   
         ITrabajador trabajador = null;   //para la iteraciÃ³n      
-      
+        
         NodoTrabajador n = this.primero;
         while(n!=null){
             sumatoria += n.persona.getSalario();
             n=n.siguiente;
         }  
-        
         return sumatoria / this.longitud();
     }
 
@@ -470,6 +469,19 @@ public class Empresa implements IEmpresa{
             n=n.siguiente;
         }  
 
+    }
+    public void generarNomina(long dni) {
+    	ITrabajador t = this.obtenerTrabajador(dni);
+    	System.out.println("DNI: "+t.getDni());
+    	System.out.println("Nombre: "+t.getNombre());
+    	System.out.println("Apellido: "+t.getApellido());
+    	System.out.println("Cargo: "+t.getCargo());
+    	System.out.println("Antigüedad: "+t.getMesesAntiguedad()+" meses");
+    	System.out.println("Periodo de Pago: "+"<Insertar Fecha>");
+    	System.out.println("Liquidación:");
+    	System.out.println("\tSalario por Cargo:\t"+t.getSalario());
+    	System.out.println("\tPremios:\t\t"+t.getPremio());
+    	System.out.println("\tSalario a Percibir:\t"+t.getMontoACobrar());
     }
 }
 
