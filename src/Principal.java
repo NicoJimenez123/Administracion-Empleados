@@ -15,6 +15,7 @@ public class Principal {
 		menu();
 	}
 	public static void menu() {
+		ITrabajador t;
 		while(true) {
 			System.out.println();
 			System.out.println("~~ Menu de Alta de Trabajadores ~~");
@@ -27,6 +28,9 @@ public class Principal {
 			System.out.println("Opcion 7) Calcular Total de Salarios a Pagar");
 			System.out.println("Opcion 8) Calcular Salario Mínimo, Máximo y Promedio a pagar");
 			System.out.println("Opcion 9) Generar la Nómina de un Trabajador por DNI");
+			System.out.println("Opcion 10) Obtener Personas a Cargo (Directamente)");
+			System.out.println("Opcion 11) Obtener Personas a Cargo (Total)");
+			System.out.println("Opcion 12) Liquidar Sueldos");
 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
 			switch(opcion) {
 			case 1:
@@ -58,6 +62,17 @@ public class Principal {
 				break;
 			case 9:
 				empresa.generarNomina(ingresarDni());
+				break;
+			case 10:
+				t = empresa.obtenerTrabajador(ingresarDni());
+				System.out.println(t.getCantidadEmpleadosACargoDirecto());
+				break;
+			case 11:
+				t = empresa.obtenerTrabajador(ingresarDni());
+				System.out.println(t.getCantidadEmpleadosACargoTotal());
+				break;
+			case 12:
+				empresa.liquidarSueldos();
 				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
