@@ -478,7 +478,7 @@ public class Empresa implements IEmpresa{
     	System.out.println("Cargo: "+t.getCargo());
     	System.out.println("Antigüedad: "+t.getMesesAntiguedad()+" meses");
     	System.out.println("Periodo de Pago: "+"<Insertar Fecha>");
-    	System.out.println("Liquidación:");
+    	System.out.println("Conceptos de Pago:");
     	System.out.println("\tSalario por Cargo:\t"+t.getSalario());
     	System.out.println("\tPremios:\t\t"+t.getPremio());
     	System.out.println("\tSalario a Percibir:\t"+t.getMontoACobrar());
