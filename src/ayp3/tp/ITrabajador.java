@@ -38,13 +38,19 @@ public interface ITrabajador {
 	
 	public double getPremio();
 	
-	/* salario m·s premio*/
+	/* salario m√°s premio*/
 	public double getMontoACobrar();
 	
 	public int getCantidadEmpleadosACargoDirecto();
 	
-	/*los suyos m·s lo de sus empleados a cargo directo y asi*/
+	/*los suyos m√°s lo de sus empleados a cargo directo y asi*/
 	public int getCantidadEmpleadosACargoTotal();
+
+	public void setMontoACobrar(double d);
+
+	public void setDni(long ingresarDni);
+
+
 	
 	
 	
