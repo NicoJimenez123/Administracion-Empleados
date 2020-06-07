@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import ayp3.tp.ExcepcionOperacionNoPermitida;
 import ayp3.tp.ITrabajador;
 import ayp3.tp.TipoCargo;
@@ -15,7 +13,6 @@ public class Principal {
 		empresa.agregarTrabajador(nico);
 		empresa.agregarTrabajador(trabajador);
 		menu();
-		
 	}
 	public static void menu() {
 		while(true) {
@@ -28,6 +25,8 @@ public class Principal {
 			System.out.println("Opcion 5) Modificar Datos de un Trabajador.");
 			System.out.println("Opcion 6) Listar Trabajadores por Tipo de Cargo");
 			System.out.println("Opcion 7) Calcular Total de Salarios a Pagar");
+			System.out.println("Opcion 8) Calcular Salario Mínimo, Máximo y Promedio a pagar");
+			System.out.println("Opcion 9) Generar la Nómina de un Trabajador por DNI");
 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
 			switch(opcion) {
 			case 1:
@@ -51,6 +50,14 @@ public class Principal {
 			case 7:
 				Double m = empresa.obtenerMontoTotalAPagar();
 				System.out.println("Se debe Pagar $"+m+" en Salarios");
+				break;
+			case 8:
+				System.out.println("Salario Minimo: "+empresa.obtenerSalarioMinimo());
+				System.out.println("Salario Máximo: "+empresa.obtenerSalarioMaximo());
+				System.out.println("Salario Promedio: "+empresa.obtenerPromedioSalarios());
+				break;
+			case 9:
+				empresa.generarNomina(ingresarDni());
 				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
