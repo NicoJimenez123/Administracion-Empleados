@@ -49,43 +49,49 @@ public class Empresa implements IEmpresa{
     
     @Override
     public void agregarDirectivo(ITrabajador trabajador) {
-        // Primero creo un nodo con el trabajador a insertar
-            NodoTrabajador nuevoTrabajador = new NodoTrabajador(trabajador);
-            // Me fijo si hay algun trabajador en la lista
-            if(this.primerDirectivo == null) {
-                    // Si no lo hay, tomo al nuevo trabajador y lo seteo como primero y ultimo en la lista
-                    this.primerDirectivo = nuevoTrabajador;
-                    this.ultimoDirectivo = nuevoTrabajador;
-            }
-            else {
-                    // Enlazo al nuevo trabajador con el ultimo en la lista
-                    this.ultimoDirectivo.setSiguiente(nuevoTrabajador);
-                    // Tambien enlazo al ultimo de la lista con el nuevo
-                    nuevoTrabajador.setAnterior(this.ultimoDirectivo);
-                    // Ahora el nuevo pasa a ser el ultimo
-                    this.ultimoDirectivo = nuevoTrabajador;
-            }
+		// Primero creo un nodo con el trabajador a insertar
+		NodoTrabajador nuevoTrabajador = new NodoTrabajador(trabajador);
+		// Me fijo si hay algun trabajador en la lista
+		if (this.primerDirectivo == null) {
+			// Si no lo hay, tomo al nuevo trabajador y lo seteo como primero y ultimo en la
+			// lista
+			this.primerDirectivo = nuevoTrabajador;
+			this.ultimoDirectivo = nuevoTrabajador;
+		} else {
+			// Enlazo al nuevo trabajador con el ultimo en la lista
+			this.ultimoDirectivo.setSiguiente(nuevoTrabajador);
+			// Tambien enlazo al ultimo de la lista con el nuevo
+			nuevoTrabajador.setAnterior(this.ultimoDirectivo);
+			// Ahora el nuevo pasa a ser el ultimo
+			this.ultimoDirectivo = nuevoTrabajador;
+		}
     }
 
     public void quitarTrabajador(long dni) {
     	// Creo este metodo para no tener que llamar a varios metodos desde el main
     	// Desde el main tengo que controlar que el DNI sea valido
     	ITrabajador trabajador = this.obtenerTrabajador(dni);
-    	TipoCargo cargo = trabajador.getCargo();
-    	if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
-    		this.quitarDirectivo(trabajador);
+    	if(trabajador == null) {
+    		System.out.println("No Existe un Trabajador con ese DNI");
     	}
-    	else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
-    		this.quitarEmpleado(trabajador);    		
+    	else {
+	    	TipoCargo cargo = trabajador.getCargo();
+	    	boolean esDirectivo = (cargo == TipoCargo.DIRECTOR_DEPARTAMENTO) || (cargo == TipoCargo.DIRECTOR_GENERAL);
+	    	if(esDirectivo) {
+	    		this.quitarDirectivo(trabajador);
+	    	}
+	    	else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
+	    		this.quitarEmpleado(trabajador);    		
+	    	}
     	}
     }
     
     @Override
     public void quitarEmpleado(ITrabajador trabajador) {
         
-        
+        /*
         //verifico si la lista-empresa esta vac√≠a
-        if(this.primero==null){/*tirar exepcion*/}
+        if(this.primero==null){//tirar exepcion}
         
         //creo los nodos que me serviran en la iteraci√≥n
         NodoTrabajador este= this.primero;  
@@ -106,20 +112,58 @@ public class Empresa implements IEmpresa{
                 previo=este;
                 este=este.getSiguiente();
             }
-        }
+        }*/
+    	NodoTrabajador nodoT = this.obtenerNodoTrabajador(trabajador);
+//    	boolean esDirectivo = nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_DEPARTAMENTO || nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_GENERAL;
+    	
+    	if(nodoT.getAnterior() == null) {
+    		System.out.println("Caso 1");
+    		// Esto implica que estamos al inicio de la lista
+    		if(nodoT.getSiguiente() != null) {
+    			// Esto implica que hay m·s trabajadores en la lista
+    			this.primero = nodoT.getSiguiente();
+				this.primero.setAnterior(null);
+    		}
+    		else {
+    			// Implica que no hay m·s trabajadores en la lista
+    			this.primero = null;
+				this.ultimo = null;
+    		}
+    	}
+    	else if(nodoT.getSiguiente() == null) {
+    		System.out.println("Caso 2");
+    		// Esto implica que estamos al final de la lista
+    		if(nodoT.getAnterior() != null) {
+    			// Esto implica que hay m·s trabajadores en la lista
+    			this.ultimo = nodoT.getAnterior();
+    			this.ultimo.setSiguiente(null);
+    		}
+    		else {
+    			// Implica que no hay m·s trabajadores en la lista
+    			this.primero = null;
+				this.ultimo = null;
+    		}
+    	}
+    	else {
+    		System.out.println("Caso 3");
+    		// Implica que estamos entre otros 2 nodos
+    		nodoT.getAnterior().setSiguiente(nodoT.getSiguiente());
+    		nodoT.getSiguiente().setAnterior(nodoT.getAnterior());
+    	}
     }
 
     @Override
     public void quitarDirectivo(ITrabajador trabajador) {
-                
+         /* Cosas que hizo mauro       
         //verifico si la lista-empresa esta vac√≠a
-        if(this.primerDirectivo==null){/*tirar exepcion*/}
+        if(this.primerDirectivo==null){//tirar exepcion}
         
         //creo los nodos que me serviran en la iteraci√≥n
-        NodoTrabajador este= this.primero;  
+        NodoTrabajador este= this.primerDirectivo;  
     	NodoTrabajador previo= null;  
 
     	while(este!=null){
+    		System.out.println("Nulo");
             if(este.persona.equals(trabajador)){  //si el nodo "tocado" contiene al trabajador buscado
                 if(previo==null){   
                     this.primero = this.primerDirectivo.getSiguiente();    
@@ -134,7 +178,45 @@ public class Empresa implements IEmpresa{
                 previo=este;
                 este=este.getSiguiente();
             }
-        }
+        }*/
+    	// Solo hay 3 casos posibles, que el Nodotrabajador no tenga un anterior, no tenga un siguiente, o que tenga ambos nodos
+    	NodoTrabajador nodoT = this.obtenerNodoTrabajador(trabajador);
+//    	boolean esDirectivo = nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_DEPARTAMENTO || nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_GENERAL;
+    	
+    	if(nodoT.getAnterior() == null) {
+    		System.out.println("Caso 1");
+    		// Esto implica que estamos al inicio de la lista
+    		if(nodoT.getSiguiente() != null) {
+    			// Esto implica que hay m·s trabajadores en la lista
+    			this.primerDirectivo = nodoT.getSiguiente();
+				this.primerDirectivo.setAnterior(null);
+    		}
+    		else {
+    			// Implica que no hay m·s trabajadores en la lista
+    			this.primerDirectivo = null;
+				this.ultimoDirectivo = null;
+    		}
+    	}
+    	else if(nodoT.getSiguiente() == null) {
+    		System.out.println("Caso 2");
+    		// Esto implica que estamos al final de la lista
+    		if(nodoT.getAnterior() != null) {
+    			// Esto implica que hay m·s trabajadores en la lista
+    			this.ultimoDirectivo = nodoT.getAnterior();
+    			this.ultimoDirectivo.setSiguiente(null);
+    		}
+    		else {
+    			// Implica que no hay m·s trabajadores en la lista
+    			this.primerDirectivo = null;
+				this.ultimoDirectivo = null;
+    		}
+    	}
+    	else {
+    		System.out.println("Caso 3");
+    		// Implica que estamos entre otros 2 nodos
+    		nodoT.getAnterior().setSiguiente(nodoT.getSiguiente());
+    		nodoT.getSiguiente().setAnterior(nodoT.getAnterior());
+    	}
     }
 
     @Override
@@ -172,22 +254,22 @@ public class Empresa implements IEmpresa{
         if(this.primerDirectivo==null){/*tirar exepcion*/}
         
         //creo los nodos que me serviran en la iteraci√≥n
-        NodoTrabajador este= this.primerDirectivo;  
-    	NodoTrabajador previo= null;  
+        NodoTrabajador directivo= this.primerDirectivo;  
+    	NodoTrabajador previo = null;  
 
-    	while(este!=null){
-            if(este.persona.getDni()==(dni)){  //si el nodo "tocado" contiene al dni buscado
-                if(previo==null){  
-                    this.primerDirectivo = this.primerDirectivo.getSiguiente();    
-                    este.setSiguiente(null);    
-                    este=this.primerDirectivo;  
-                    previo.setSiguiente(este.getSiguiente());
-                    este.setSiguiente(null);
-                    este= previo.getSiguiente();
-                }                
+    	while(directivo != null){
+            if(directivo.persona.getDni() == (dni)){  //si el nodo "tocado" contiene al dni buscado
+                if(previo == null){  
+                    this.primerDirectivo = this.primerDirectivo.getSiguiente();
+                    this.primerDirectivo.setAnterior(null);
+                    break;
+                }         
+                else {
+                	
+                }
             }else{
-                previo=este;
-                este=este.getSiguiente();
+                directivo = directivo.getSiguiente();
+                previo = directivo.getAnterior();
             }
         }
     }
@@ -539,6 +621,27 @@ public class Empresa implements IEmpresa{
     	System.out.println("\tSalario por Cargo:\t"+t.getSalario());
     	System.out.println("\tPremios:\t\t"+t.getPremio());
     	System.out.println("\tSalario a Percibir:\t"+t.getMontoACobrar());
+    }
+    public NodoTrabajador obtenerNodoTrabajador(ITrabajador t) {
+    	// Primero recorro los directivos
+    	NodoTrabajador n = this.primerDirectivo;
+    	while(n != null) {
+    		if(n.getPersona() == t) {
+    			// Si el Nodo posee al trabajador lo retorno
+    			return n;
+    		}
+    		n = n.getSiguiente();
+    	}
+    	// Ahora recorro los empleados
+    	n = this.primero;
+    	while(n != null) {
+    		if(n.getPersona() == t) {
+    			// Si el Nodo posee al trabajador lo retorno
+    			return n;
+    		}
+    		n = n.getSiguiente();
+    	}
+    	return null;
     }
 }
 
