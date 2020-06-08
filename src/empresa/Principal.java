@@ -1,23 +1,22 @@
 package empresa;
+
 import ayp3.tp.ExcepcionOperacionNoPermitida;
 import ayp3.tp.ITrabajador;
 import ayp3.tp.TipoCargo;
 import unpaz.ayp3.Consola;
+import empresa.Trabajador;
 
 public class Principal {
 	static Empresa empresa = new Empresa();
-	static Fecha f=new Fecha(12,3,2015);
-	static Fecha fechaNico = new Fecha(25,3,2000);
-	static Trabajador trabajador=new Trabajador(12345, "Deby", "Villca",TipoCargo.DIRECTOR_DEPARTAMENTO,f );
-	static Trabajador nico = new Trabajador(123,"Nicolas", "Jimenez", TipoCargo.OPERARIO, fechaNico, "APU", "Licenciado en la Administracion de la Mantisa");
 	public static void main(String[] args) {
-		empresa.agregarTrabajador(nico);
-		empresa.agregarTrabajador(trabajador);
+		anadirTrabajadoresPredeterminados();
 		menu();
 	}
 	public static void menu() {
 		ITrabajador t;
 		while(true) {
+			for(int i = 0; i < 80; i++) // Default Height of cmd is 300 and Default width is 80
+			    System.out.println(); // Prints a backspace
 			System.out.println();
 			System.out.println("~~ Menu de Alta de Trabajadores ~~");
 			System.out.println("Opcion 1) Dar de Alta de un Trabajador.");
@@ -38,7 +37,7 @@ public class Principal {
 				empresa.agregarEmpleado(altaTrabajador());
 				break;
 			case 2:
-				empresa.quitarEmpleado(ingresarDni());
+				empresa.quitarTrabajador(ingresarDni());
 				break;
 			case 3:
 				empresa.listarTrabajadores();
@@ -77,7 +76,7 @@ public class Principal {
 				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
-			System.out.println();
+			Consola.pedirTexto("Presione Enter para Continuar");
 		}
 	}
 	private static long ingresarDni() {
@@ -245,6 +244,30 @@ public class Principal {
     		}
     	}while(opcion != 9);
     	}
+    }
+    
+    public static void anadirTrabajadoresPredeterminados() {
+    	// Este es un metodo para anadir trabajadores sin tener que hacerlo una y otra vez mediante el programa
+    	Fecha f1=new Fecha(12,3,2015);
+    	Fecha f2 = new Fecha(25,3,2000);
+    	Fecha f3 = new Fecha(25,3,2020);
+    	Fecha f4 = new Fecha(25,3,2010);
+    	Fecha f5 = new Fecha(25,3,2005);
+    	Fecha f6 = new Fecha(25,5,2005);
+    	
+    	Trabajador nico = new Trabajador(123,"Nicolas", "Jimenez", TipoCargo.DIRECTOR_GENERAL, f2, "APU", "Licenciado en la Administracion de la Mantisa");
+    	Trabajador trabajador=new Trabajador(1, "Deby", "Villca",TipoCargo.DIRECTOR_DEPARTAMENTO,f1 );
+    	Trabajador trabajador2=new Trabajador(2, "Deby2", "Villca",TipoCargo.JEFES,f3 );
+    	Trabajador trabajador3=new Trabajador(3, "Deby3", "Villca",TipoCargo.SUPERVISOR,f4 );
+    	Trabajador trabajador4=new Trabajador(4, "Deby4", "Villca",TipoCargo.OPERARIO,f5 );
+    	Trabajador trabajador5=new Trabajador(5, "Deby5", "Villca",TipoCargo.DIRECTOR_GENERAL,f6 );
+    	
+		empresa.agregarTrabajador(nico);
+		empresa.agregarTrabajador(trabajador);
+		empresa.agregarTrabajador(trabajador2);
+		empresa.agregarTrabajador(trabajador3);
+		empresa.agregarTrabajador(trabajador4);
+		empresa.agregarTrabajador(trabajador5);
     }
     /*
     public static void mostrarTrabajadores() {
