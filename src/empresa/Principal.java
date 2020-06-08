@@ -31,6 +31,7 @@ public class Principal {
 			System.out.println("Opcion 10) Obtener Personas a Cargo (Directamente)");
 			System.out.println("Opcion 11) Obtener Personas a Cargo (Total)");
 			System.out.println("Opcion 12) Liquidar Sueldos");
+			System.out.println("Opcion 13) Establecer Personas a Cargo");
 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
 			switch(opcion) {
 			case 1:
@@ -73,6 +74,9 @@ public class Principal {
 				break;
 			case 12:
 				empresa.liquidarSueldos();
+				break;
+			case 13:
+				establecerPersonaACargo();
 				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
@@ -277,6 +281,30 @@ public class Principal {
     		System.out.println(trabajador.toString());
     	}
     }*/
+    public static void establecerPersonaACargo() {
+    	System.out.println("A Continuación, Ingrese el DNI de la Persona Encargada");
+		ITrabajador personaACargo;
+		ITrabajador t = empresa.obtenerTrabajador(ingresarDni());
+		if(t == null) {
+			System.out.println("No Existe un Trabajador con ese DNI");
+		}
+		else {
+			if (t.getCargo() == TipoCargo.OPERARIO) {
+				System.out.println("Los Operarios no Pueden Tener Personas a Cargo");
+			}
+			else {
+				System.out.println("A Continuación, Ingrese el DNI de la Persona a tener a Cargo");
+				personaACargo = empresa.obtenerTrabajador(ingresarDni());
+				if(personaACargo == null) {
+					System.out.println("No Existe un Trabajador con ese DNI");
+				}
+				else {
+					t.setTrabajadoresACargo(personaACargo);
+				}
+			}
+		}
+		
+    }
 }
 
 

@@ -168,13 +168,42 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public int getCantidadEmpleadosACargoTotal() {
-		int s=0;
+		/*int s=0;
 		for(int i=0;i<this.TrabajadoresACargo.size();i++) {
 			s+=1;
 		}
-		return s;
-		
+		return s;*/
+		return this.cantidad();
 	}
+	public int cantidad() {
+		int c = 0;
+		for(ITrabajador t: this.TrabajadoresACargo) {
+			// Acá recorro los directores generales
+			for(ITrabajador t2: t.getListaACargo()) {
+				// Acá recorro los directores de departamento
+				for(ITrabajador t3: t2.getListaACargo()) {
+					// Acá recorro los jefes
+					for(ITrabajador t4: t3.getListaACargo()) {
+						// Acá recorro los supervisores
+						for(ITrabajador t5: t4.getListaACargo()) {
+							// Acá recorro los operarios
+							c++;
+						}
+						c++;
+					}
+					c++;
+				}
+				c++;
+			}
+			c++;
+		}
+		return c;
+	}
+	@Override
+	public List<ITrabajador> getListaACargo(){
+		return this.TrabajadoresACargo;
+	}
+	
 	@Override
 	public String toString() {
 		String s = "Nombre del Trabajador: "+this.getNombre()+
@@ -218,6 +247,7 @@ public class Trabajador implements ITrabajador{
 	public void setTitulop(String titulop) {
 		this.titulop = titulop;
 	}
+	@Override
 	public void setTrabajadoresACargo(ITrabajador trabajadoresACargo) {
 		this.TrabajadoresACargo.add(trabajadoresACargo);
 	}
