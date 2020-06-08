@@ -222,9 +222,18 @@ public class Empresa implements IEmpresa{
     public void liquidarSueldos() {
         //recorro la lista-empresa y seteo el atributo sueldo de cada trabajador 
         
+        //pago a empleados
         NodoTrabajador n = this.primero;
         while(n!=null){
-        	n.persona.setMontoACobrar(0);
+            n.persona.setMontoACobrar(0);
+            
+            n=n.siguiente;
+        }    
+        
+        //pago a directivos
+        n=this.primerDirectivo;
+        while(n!=null){
+            n.persona.setMontoACobrar(0);
             
             n=n.siguiente;
         }                
@@ -260,7 +269,7 @@ public class Empresa implements IEmpresa{
         double minimo=100000;   //uso el maximo valor de salario que se puede ganar, como referencia
         ITrabajador trabajadorMinimo = null; //guarda al trabajador con salario minimo
         
-        ITrabajador trabajador = null;   //para la iteración      
+        ITrabajador trabajador = null;   //para la iteracion      
       
         NodoTrabajador n = this.primero;
         while(n!=null){
@@ -271,6 +280,16 @@ public class Empresa implements IEmpresa{
             
             n=n.siguiente;
         }  
+
+        n = this.primerDirectivo;
+        while(n!=null){
+            if(n.persona.getSalario() < minimo){
+                minimo = n.persona.getSalario();
+                trabajadorMinimo = n.persona;                
+            }
+            
+            n=n.siguiente;
+        } 
         
         return trabajadorMinimo;
     }
@@ -284,6 +303,15 @@ public class Empresa implements IEmpresa{
         ITrabajador trabajador = null;   //para la iteración      
       
         NodoTrabajador n = this.primero;
+        while(n!=null){
+            if(n.persona.getSalario() >= maximo){
+                maximo = n.persona.getSalario();
+                trabajadorMaximo = n.persona;                
+            }
+            n=n.siguiente;
+        }  
+
+        n = this.primerDirectivo;
         while(n!=null){
             if(n.persona.getSalario() >= maximo){
                 maximo = n.persona.getSalario();
@@ -314,6 +342,13 @@ public class Empresa implements IEmpresa{
             sumatoria += n.persona.getSalario();
             n=n.siguiente;
         }  
+
+        n = this.primerDirectivo;
+        while(n!=null){
+            sumatoria += n.persona.getSalario();
+            n=n.siguiente;
+        } 
+
         return sumatoria / this.longitud();
     }
 
@@ -334,6 +369,15 @@ public class Empresa implements IEmpresa{
             n=n.siguiente;
         }  
         
+        n = this.primerDirectivo;
+        while(n!=null){
+            if(n.persona.getMesesAntiguedad() >= maximo){
+                maximo = n.persona.getMesesAntiguedad();
+                trabajadorMaximo = n.persona;                
+            }
+            n=n.siguiente;
+        } 
+
         return trabajadorMaximo;
     }
 
@@ -353,6 +397,15 @@ public class Empresa implements IEmpresa{
             }
             n=n.siguiente;
         }  
+
+        n = this.primerDirectivo;
+        while(n!=null){
+            if(n.persona.getMesesAntiguedad() <= maximo){
+                maximo = n.persona.getMesesAntiguedad();
+                trabajadorMinimo = n.persona;                
+            }
+            n=n.siguiente;
+        }  
         
         return trabajadorMinimo;
     }
@@ -365,6 +418,13 @@ public class Empresa implements IEmpresa{
     		System.out.println(n.persona.getNombre()+", ");
     		n=n.siguiente;
     	}
+
+        n = this.primerDirectivo;
+
+        while(n != null){
+            System.out.println(n.persona.getNombre()+", ");
+            n=n.siguiente;
+        }
     }
     
     public int longitud(){  //calcula la cantidad de nodos de la lista
@@ -375,6 +435,13 @@ public class Empresa implements IEmpresa{
     		contador++;
                 n=n.siguiente;
     	}        
+
+        n = this.primerDirectivo;
+
+        while(n != null){
+            contador++;
+                n=n.siguiente;
+        }        
         
         return contador;
     }
