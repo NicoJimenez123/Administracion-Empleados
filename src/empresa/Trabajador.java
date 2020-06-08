@@ -248,8 +248,13 @@ public class Trabajador implements ITrabajador{
 		this.titulop = titulop;
 	}
 	@Override
-	public void setTrabajadoresACargo(ITrabajador trabajadoresACargo) {
-		this.TrabajadoresACargo.add(trabajadoresACargo);
+	public void setTrabajadoresACargo(ITrabajador trabajador) {
+		if(this.TrabajadoresACargo.contains(trabajador)) {
+			System.out.println("Este Trabajador ya se Encuentra a Cargo");
+		}
+		else {
+			this.TrabajadoresACargo.add(trabajador);
+		}
 	}
 	
 	
