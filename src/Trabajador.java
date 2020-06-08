@@ -82,7 +82,11 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public boolean tieneTituloPostgrado() {
-		return (titulop!=null);
+		if(titulop == "" || titulop == null) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 	@Override
 	public String getNombre() {
@@ -98,7 +102,7 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public void agregarTrabajadorACargo(ITrabajador trabajador) throws ExcepcionOperacionNoPermitida {	
-		if(trabajador.equals(TipoCargo.OPERARIO)) {
+		if(trabajador.getCargo().equals(TipoCargo.OPERARIO)) {
 			throw new ExcepcionOperacionNoPermitida ("Un operario no puede tener trabajador a cargo");
 		}
 		TrabajadoresACargo.add(trabajador);
