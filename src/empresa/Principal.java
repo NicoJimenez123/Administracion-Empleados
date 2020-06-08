@@ -1,3 +1,4 @@
+package empresa;
 import ayp3.tp.ExcepcionOperacionNoPermitida;
 import ayp3.tp.ITrabajador;
 import ayp3.tp.TipoCargo;
@@ -205,7 +206,6 @@ public class Principal {
     		switch(opcion) {
     		case 0:
     			break;
-    		/* Metodos a la espera de ser construidos
     		case 1:
     			trabajador.setDni(ingresarDni());
     			break;
@@ -221,7 +221,6 @@ public class Principal {
     		case 5:
     			trabajador.setFechaIngreso(ingresarFecha());
     			break;
-    		*/
     		case 6:
     			trabajador.setTituloUniversitario(Consola.pedirTexto("Ingrese el Titulo Universitario: "));
     			break;

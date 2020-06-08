@@ -1,10 +1,10 @@
-
+package empresa;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import ayp3.tp.*;
 
-public class Empresa2 implements IEmpresa{
+public class Empresa implements IEmpresa{
     
     NodoTrabajador primero;
     NodoTrabajador ultimo;
@@ -12,7 +12,7 @@ public class Empresa2 implements IEmpresa{
     NodoTrabajador ultimoDirectivo;
     
     
-    public Empresa2() {
+    public Empresa() {
             this.primero = null;
     }
     
@@ -85,10 +85,10 @@ public class Empresa2 implements IEmpresa{
     public void quitarEmpleado(ITrabajador trabajador) {
         
         
-        //verifico si la lista-empresa esta vac韆
+        //verifico si la lista-empresa esta vac铆a
         if(this.primero==null){/*tirar exepcion*/}
         
-        //creo los nodos que me serviran en la iteraci髇
+        //creo los nodos que me serviran en la iteraci贸n
         NodoTrabajador este= this.primero;  
     	NodoTrabajador previo= null;  
 
@@ -103,7 +103,7 @@ public class Empresa2 implements IEmpresa{
                     este.setSiguiente(null);
                     este= previo.getSiguiente();
                 }                
-            }else{  //reacomodo los nodos para continuar con la iteraci髇
+            }else{  //reacomodo los nodos para continuar con la iteraci贸n
                 previo=este;
                 este=este.getSiguiente();
             }
@@ -113,10 +113,10 @@ public class Empresa2 implements IEmpresa{
     @Override
     public void quitarDirectivo(ITrabajador trabajador) {
                 
-        //verifico si la lista-empresa esta vac韆
+        //verifico si la lista-empresa esta vac铆a
         if(this.primerDirectivo==null){/*tirar exepcion*/}
         
-        //creo los nodos que me serviran en la iteraci髇
+        //creo los nodos que me serviran en la iteraci贸n
         NodoTrabajador este= this.primero;  
     	NodoTrabajador previo= null;  
 
@@ -131,7 +131,7 @@ public class Empresa2 implements IEmpresa{
                     este.setSiguiente(null);
                     este= previo.getSiguiente();
                 }                
-            }else{  //reacomodo los nodos para continuar con la iteraci髇
+            }else{  //reacomodo los nodos para continuar con la iteraci贸n
                 previo=este;
                 este=este.getSiguiente();
             }
@@ -142,10 +142,10 @@ public class Empresa2 implements IEmpresa{
     public void quitarEmpleado(long dni) {
         
         
-        //verifico si la lista-empresa esta vac韆
+        //verifico si la lista-empresa esta vac铆a
         if(this.primero==null){/*tirar exepcion*/}
         
-        //creo los nodos que me serviran en la iteraci髇
+        //creo los nodos que me serviran en la iteraci贸n
         NodoTrabajador este= this.primero;  
     	NodoTrabajador previo= null;  
 
@@ -169,10 +169,10 @@ public class Empresa2 implements IEmpresa{
 
     @Override
     public void quitarDirectivo(long dni) {
-        //verifico si la lista-empresa esta vac韆
+        //verifico si la lista-empresa esta vac铆a
         if(this.primerDirectivo==null){/*tirar exepcion*/}
         
-        //creo los nodos que me serviran en la iteraci髇
+        //creo los nodos que me serviran en la iteraci贸n
         NodoTrabajador este= this.primerDirectivo;  
     	NodoTrabajador previo= null;  
 
@@ -222,9 +222,18 @@ public class Empresa2 implements IEmpresa{
     public void liquidarSueldos() {
         //recorro la lista-empresa y seteo el atributo sueldo de cada trabajador 
         
+        //pago a empleados
         NodoTrabajador n = this.primero;
         while(n!=null){
-            n.persona.setSalario(n.persona.getSalario() + n.persona.getMontoACobrar());
+            n.persona.setMontoACobrar(0);
+            
+            n=n.siguiente;
+        }    
+        
+        //pago a directivos
+        n=this.primerDirectivo;
+        while(n!=null){
+            n.persona.setMontoACobrar(0);
             
             n=n.siguiente;
         }                
@@ -258,9 +267,9 @@ public class Empresa2 implements IEmpresa{
         
         //recorro la lista-empresa chequeo cada salario
         double minimo=100000;   //uso el maximo valor de salario que se puede ganar, como referencia
-        ITrabajador trabajadorMinimo = new Trabajador(); //guarda al trabajador con salario minimo
+        ITrabajador trabajadorMinimo = null; //guarda al trabajador con salario minimo
         
-        ITrabajador trabajador = new Trabajador();   //para la iteraci髇      
+        ITrabajador trabajador = null;   //para la iteracion      
       
         NodoTrabajador n = this.primero;
         while(n!=null){
@@ -271,6 +280,16 @@ public class Empresa2 implements IEmpresa{
             
             n=n.siguiente;
         }  
+
+        n = this.primerDirectivo;
+        while(n!=null){
+            if(n.persona.getSalario() < minimo){
+                minimo = n.persona.getSalario();
+                trabajadorMinimo = n.persona;                
+            }
+            
+            n=n.siguiente;
+        } 
         
         return trabajadorMinimo;
     }
@@ -279,11 +298,20 @@ public class Empresa2 implements IEmpresa{
     public ITrabajador obtenerTrabajadorSalarioMaximo() {
         //recorro la lista-empresa chequeo cada salario
         double maximo=0;   
-        ITrabajador trabajadorMaximo = new Trabajador(); //guarda al trabajador con salario m醲imo
+        ITrabajador trabajadorMaximo = null; //guarda al trabajador con salario m谩ximo
         
-        ITrabajador trabajador = new Trabajador();   //para la iteraci髇      
+        ITrabajador trabajador = null;   //para la iteraci贸n      
       
         NodoTrabajador n = this.primero;
+        while(n!=null){
+            if(n.persona.getSalario() >= maximo){
+                maximo = n.persona.getSalario();
+                trabajadorMaximo = n.persona;                
+            }
+            n=n.siguiente;
+        }  
+
+        n = this.primerDirectivo;
         while(n!=null){
             if(n.persona.getSalario() >= maximo){
                 maximo = n.persona.getSalario();
@@ -294,19 +322,33 @@ public class Empresa2 implements IEmpresa{
         
         return trabajadorMaximo;
     }
+    
+    public double obtenerSalarioMinimo() {
+    	return this.obtenerTrabajadorSalarioMinimo().getSalario();
+    }
+    
+    public double obtenerSalarioMaximo() {
+    	return this.obtenerTrabajadorSalarioMaximo().getSalario();
+    }
 
     @Override
     public double obtenerPromedioSalarios() {
         //recorro la lista-empresa chequeo cada salario
         double sumatoria=0;   
-        ITrabajador trabajador = new Trabajador();   //para la iteraci髇      
-      
+        ITrabajador trabajador = null;   //para la iteraci贸n      
+        
         NodoTrabajador n = this.primero;
         while(n!=null){
             sumatoria += n.persona.getSalario();
             n=n.siguiente;
         }  
-        
+
+        n = this.primerDirectivo;
+        while(n!=null){
+            sumatoria += n.persona.getSalario();
+            n=n.siguiente;
+        } 
+
         return sumatoria / this.longitud();
     }
 
@@ -314,9 +356,9 @@ public class Empresa2 implements IEmpresa{
     public ITrabajador obtenerTrabajadorMasAntiguo() {
         //recorro la lista-empresa chequeo cada antiguedad
         double maximo=0;   
-        ITrabajador trabajadorMaximo = new Trabajador(); //guarda al trabajador con mayor antiguedad
+        ITrabajador trabajadorMaximo = null; //guarda al trabajador con mayor antiguedad
         
-        ITrabajador trabajador = new Trabajador();   //para la iteraci髇      
+        ITrabajador trabajador = null;   //para la iteraci贸n      
       
         NodoTrabajador n = this.primero;
         while(n!=null){
@@ -327,6 +369,15 @@ public class Empresa2 implements IEmpresa{
             n=n.siguiente;
         }  
         
+        n = this.primerDirectivo;
+        while(n!=null){
+            if(n.persona.getMesesAntiguedad() >= maximo){
+                maximo = n.persona.getMesesAntiguedad();
+                trabajadorMaximo = n.persona;                
+            }
+            n=n.siguiente;
+        } 
+
         return trabajadorMaximo;
     }
 
@@ -334,11 +385,20 @@ public class Empresa2 implements IEmpresa{
     public ITrabajador obtenerTrabajadorMasReciente() {
         //recorro la lista-empresa chequeo cada antiguedad
         double maximo=1000000;   
-        ITrabajador trabajadorMinimo = new Trabajador(); //guarda al trabajador con menor antiguedad
+        ITrabajador trabajadorMinimo = null; //guarda al trabajador con menor antiguedad
         
-        ITrabajador trabajador = new Trabajador();   //para la iteraci髇      
+        ITrabajador trabajador = null;   //para la iteraci贸n      
       
         NodoTrabajador n = this.primero;
+        while(n!=null){
+            if(n.persona.getMesesAntiguedad() <= maximo){
+                maximo = n.persona.getMesesAntiguedad();
+                trabajadorMinimo = n.persona;                
+            }
+            n=n.siguiente;
+        }  
+
+        n = this.primerDirectivo;
         while(n!=null){
             if(n.persona.getMesesAntiguedad() <= maximo){
                 maximo = n.persona.getMesesAntiguedad();
@@ -350,7 +410,7 @@ public class Empresa2 implements IEmpresa{
         return trabajadorMinimo;
     }
     
-    //METODOS 赥ILES, FUERA DE LOS PEDIDOS POR LA CONSIGNA
+    //METODOS 脷TILES, FUERA DE LOS PEDIDOS POR LA CONSIGNA
     public void mostrarNombres(){ //muestra los nombres de los trabjadores dentro de la lista
         NodoTrabajador n = this.primero;
 
@@ -358,6 +418,13 @@ public class Empresa2 implements IEmpresa{
     		System.out.println(n.persona.getNombre()+", ");
     		n=n.siguiente;
     	}
+
+        n = this.primerDirectivo;
+
+        while(n != null){
+            System.out.println(n.persona.getNombre()+", ");
+            n=n.siguiente;
+        }
     }
     
     public int longitud(){  //calcula la cantidad de nodos de la lista
@@ -368,6 +435,13 @@ public class Empresa2 implements IEmpresa{
     		contador++;
                 n=n.siguiente;
     	}        
+
+        n = this.primerDirectivo;
+
+        while(n != null){
+            contador++;
+                n=n.siguiente;
+        }        
         
         return contador;
     }
@@ -452,6 +526,29 @@ public class Empresa2 implements IEmpresa{
     		System.out.println(t);
     		System.out.println();
     	}
+    }
+    public void definirMontoACobrarDeTodos(){
+        NodoTrabajador n = this.primero;
+        while(n!=null){
+            n.persona.setMontoACobrar(n.persona.getSalario() + n.persona.getPremio());
+            /*test*/ System.out.println("Monto a cobrar de "+n.persona.getNombre()+": "+(n.persona.getSalario() + n.persona.getPremio()));
+
+            n=n.siguiente;
+        }  
+
+    }
+    public void generarNomina(long dni) {
+    	ITrabajador t = this.obtenerTrabajador(dni);
+    	System.out.println("DNI: "+t.getDni());
+    	System.out.println("Nombre: "+t.getNombre());
+    	System.out.println("Apellido: "+t.getApellido());
+    	System.out.println("Cargo: "+t.getCargo());
+    	System.out.println("Antig黣dad: "+t.getMesesAntiguedad()+" meses");
+    	System.out.println("Periodo de Pago: "+"<Insertar Fecha>");
+    	System.out.println("Conceptos de Pago:");
+    	System.out.println("\tSalario por Cargo:\t"+t.getSalario());
+    	System.out.println("\tPremios:\t\t"+t.getPremio());
+    	System.out.println("\tSalario a Percibir:\t"+t.getMontoACobrar());
     }
 }
 

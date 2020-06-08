@@ -1,5 +1,7 @@
 package ayp3.tp;
 
+import empresa.Fecha;
+
 public interface ITrabajador {
 	
 	public boolean esEmpleado();
@@ -49,6 +51,14 @@ public interface ITrabajador {
 	public void setMontoACobrar(double d);
 
 	public void setDni(long ingresarDni);
+
+	public void setNombre(String pedirTexto);
+
+	public void setApellido(String pedirTexto);
+
+	public void setCargo(TipoCargo ingresarCargo);
+
+	public void setFechaIngreso(Fecha ingresarFecha);
 
 
 	
