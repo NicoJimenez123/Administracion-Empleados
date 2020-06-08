@@ -62,7 +62,12 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public boolean tieneTituloUniversitario() {
-		return (titulo!=null);
+		if(titulo == "" || titulo == null) {
+			return false;
+		}else {
+			return true;
+		}
+	 
 	}
 	@Override
 	public void setTituloPostgrado(String titulo) throws ExcepcionOperacionNoPermitida {
@@ -93,7 +98,7 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public void agregarTrabajadorACargo(ITrabajador trabajador) throws ExcepcionOperacionNoPermitida {	
-		if(trabajador.getCargo().equals(TipoCargo.OPERARIO)) {
+		if(trabajador.equals(TipoCargo.OPERARIO)) {
 			throw new ExcepcionOperacionNoPermitida ("Un operario no puede tener trabajador a cargo");
 		}
 		TrabajadoresACargo.add(trabajador);
@@ -116,11 +121,11 @@ public class Trabajador implements ITrabajador{
 		boolean esDirectivo = cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL);
 		boolean esEmpleado = cargo.equals(TipoCargo.JEFES) || cargo.equals(TipoCargo.SUPERVISOR) || cargo.equals(TipoCargo.OPERARIO);
 		double premio = 0;
-		
+
 		if (esDirectivo && this.getMesesAntiguedad() >= 12) {
 			premio += 100000;
 		}
-			if (esDirectivo && this.getMesesAntiguedad() < 12) {
+		if (esDirectivo && this.getMesesAntiguedad() < 12) {
 			premio += 50000;
 		}
 		if (esEmpleado && this.getMesesAntiguedad() >= 12) {
@@ -154,12 +159,15 @@ public class Trabajador implements ITrabajador{
 		if(cargo.equals(TipoCargo.OPERARIO)) {
 			return 0;
 		}
-	
 		return this.TrabajadoresACargo.size();
 	}
 	@Override
 	public int getCantidadEmpleadosACargoTotal() {
-		return 0;
+		int s=0;
+		for(int i=0;i<this.TrabajadoresACargo.size();i++) {
+			s+=1;
+		}
+		return s;
 		
 	}
 	@Override
@@ -179,6 +187,7 @@ public class Trabajador implements ITrabajador{
 				"Empleado a cargo (total): "+this.getCantidadEmpleadosACargoTotal();		 
 		return s;
 	}
+	@Override
 	public void setMontoACobrar(double d) {
 		this.MontoACobrar=d;
 		
