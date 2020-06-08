@@ -178,7 +178,7 @@ public class Empresa implements IEmpresa{
 
     	while(este!=null){
             if(este.persona.getDni()==(dni)){  //si el nodo "tocado" contiene al dni buscado
-                if(previo==null){   
+                if(previo==null){  
                     this.primerDirectivo = this.primerDirectivo.getSiguiente();    
                     este.setSiguiente(null);    
                     este=this.primerDirectivo;  
@@ -269,7 +269,6 @@ public class Empresa implements IEmpresa{
         double minimo=100000;   //uso el maximo valor de salario que se puede ganar, como referencia
         ITrabajador trabajadorMinimo = null; //guarda al trabajador con salario minimo
         
-        ITrabajador trabajador = null;   //para la iteracion      
       
         NodoTrabajador n = this.primero;
         while(n!=null){
@@ -300,8 +299,6 @@ public class Empresa implements IEmpresa{
         double maximo=0;   
         ITrabajador trabajadorMaximo = null; //guarda al trabajador con salario máximo
         
-        ITrabajador trabajador = null;   //para la iteración      
-      
         NodoTrabajador n = this.primero;
         while(n!=null){
             if(n.persona.getSalario() >= maximo){
@@ -335,8 +332,6 @@ public class Empresa implements IEmpresa{
     public double obtenerPromedioSalarios() {
         //recorro la lista-empresa chequeo cada salario
         double sumatoria=0;   
-        ITrabajador trabajador = null;   //para la iteración      
-        
         NodoTrabajador n = this.primero;
         while(n!=null){
             sumatoria += n.persona.getSalario();
@@ -358,8 +353,6 @@ public class Empresa implements IEmpresa{
         double maximo=0;   
         ITrabajador trabajadorMaximo = null; //guarda al trabajador con mayor antiguedad
         
-        ITrabajador trabajador = null;   //para la iteración      
-      
         NodoTrabajador n = this.primero;
         while(n!=null){
             if(n.persona.getMesesAntiguedad() >= maximo){
@@ -387,8 +380,6 @@ public class Empresa implements IEmpresa{
         double maximo=1000000;   
         ITrabajador trabajadorMinimo = null; //guarda al trabajador con menor antiguedad
         
-        ITrabajador trabajador = null;   //para la iteración      
-      
         NodoTrabajador n = this.primero;
         while(n!=null){
             if(n.persona.getMesesAntiguedad() <= maximo){
