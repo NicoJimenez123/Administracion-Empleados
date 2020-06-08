@@ -299,7 +299,12 @@ public class Principal {
 					System.out.println("No Existe un Trabajador con ese DNI");
 				}
 				else {
-					t.setTrabajadoresACargo(personaACargo);
+					if(t.getCargo().esMayor(personaACargo.getCargo())) {
+						t.setTrabajadoresACargo(personaACargo);
+					}
+					else {
+						System.out.println("No se Puede Asignar una Persona a Cargo de una de Rango Mayor");
+					}
 				}
 			}
 		}
