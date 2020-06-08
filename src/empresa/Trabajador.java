@@ -218,8 +218,8 @@ public class Trabajador implements ITrabajador{
 	public void setTitulop(String titulop) {
 		this.titulop = titulop;
 	}
-	public void setTrabajadoresACargo(List<ITrabajador> trabajadoresACargo) {
-		TrabajadoresACargo = trabajadoresACargo;
+	public void setTrabajadoresACargo(ITrabajador trabajadoresACargo) {
+		this.TrabajadoresACargo.add(trabajadoresACargo);
 	}
 	
 	
