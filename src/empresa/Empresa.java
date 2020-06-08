@@ -18,13 +18,13 @@ public class Empresa implements IEmpresa{
     public void agregarTrabajador(ITrabajador trabajador) {
     	// Creo este metodo para no tener que llamar a varios metodos desde el main
     	// Desde el main tengo que controlar que el DNI sea valido
-    	TipoCargo cargo = trabajador.getCargo();
-    	if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
-    		this.agregarDirectivo(trabajador);
-    	}
-    	else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
-    		this.agregarEmpleado(trabajador);    		
-    	}
+	    TipoCargo cargo = trabajador.getCargo();
+	    if(cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL) {
+	    	this.agregarDirectivo(trabajador);
+	    }
+	    else { // Si llega hasta aca es porque el cargo del trabajador es uno de los otros 3
+	    	this.agregarEmpleado(trabajador);    		
+	    }
     }
     
     @Override
