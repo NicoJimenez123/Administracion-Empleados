@@ -35,7 +35,11 @@ public class Principal {
 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
 			switch(opcion) {
 			case 1:
-				empresa.agregarEmpleado(altaTrabajador());
+				t = altaTrabajador();
+				if(t != null) {
+					// Si se pudo dar de alta un trabajador, lo agrego a la empresa
+					empresa.agregarEmpleado(t);
+				}
 				break;
 			case 2:
 				empresa.quitarTrabajador(ingresarDni());
@@ -104,24 +108,32 @@ public class Principal {
 		Fecha fechaIngreso;
 		// Y voy rellenando las variables
 		dni = ingresarDni();
-		nombre = Consola.pedirTexto("Ingrese el Nombre: ");
-		apellido = Consola.pedirTexto("Ingrese el Apellido: ");
-		
-		cargo = ingresarCargo();
-		boolean elCargoEsDirectivo = cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL;
-		
-		fechaIngreso = ingresarFecha();
-		
-		// Ingreso los titulos del trabajador
-		titulo = Consola.pedirTexto("Ingrese el Titulo Universitario: ");
-		if(elCargoEsDirectivo) {
-			// Al parecer, solo los directores necesitan almacenar el titulo de postgrado
-			tituloPostgrado = Consola.pedirTexto("Ingrese el Titulo de Postgrado: ");
+		// Si el DNI ya está ingresado: 
+		if(empresa.obtenerTrabajador(dni) == null) {
+			// Implica que no hay otro trabajador con ese DNI
+			nombre = Consola.pedirTexto("Ingrese el Nombre: ");
+			apellido = Consola.pedirTexto("Ingrese el Apellido: ");
+			
+			cargo = ingresarCargo();
+			boolean elCargoEsDirectivo = cargo == TipoCargo.DIRECTOR_DEPARTAMENTO || cargo == TipoCargo.DIRECTOR_GENERAL;
+			
+			fechaIngreso = ingresarFecha();
+			
+			// Ingreso los titulos del trabajador
+			titulo = Consola.pedirTexto("Ingrese el Titulo Universitario: ");
+			if(elCargoEsDirectivo) {
+				// Al parecer, solo los directores necesitan almacenar el titulo de postgrado
+				tituloPostgrado = Consola.pedirTexto("Ingrese el Titulo de Postgrado: ");
+			}
+			// Creo un nuevo trabajador
+			ITrabajador trabajador = new Trabajador(dni,nombre,apellido,cargo,fechaIngreso,titulo,tituloPostgrado);
+			// Retorno la instancia del nuevo trabajador
+			return trabajador;
 		}
-		// Creo un nuevo trabajador
-		ITrabajador trabajador = new Trabajador(dni,nombre,apellido,cargo,fechaIngreso,titulo,tituloPostgrado);
-		// Retorno la instancia del nuevo trabajador
-		return trabajador;
+		else {
+			System.out.println("Ya Existe un Trabajador con ese DNI");
+			return null;
+		}
 	}
 	
     private static TipoCargo ingresarCargo() {
