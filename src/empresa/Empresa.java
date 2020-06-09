@@ -89,30 +89,7 @@ public class Empresa implements IEmpresa{
     @Override
     public void quitarEmpleado(ITrabajador trabajador) {
         
-        /*
-        //verifico si la lista-empresa esta vacía
-        if(this.primero==null){//tirar exepcion}
         
-        //creo los nodos que me serviran en la iteración
-        NodoTrabajador este= this.primero;  
-    	NodoTrabajador previo= null;  
-
-    	while(este!=null){
-            if(este.persona.equals(trabajador)){  //si el nodo "tocado" contiene al trabajador buscado
-                if(previo==null){   
-                    this.primero = this.primero.getSiguiente();    
-                    este.setSiguiente(null);    
-                    este=this.primero;  
-                }else{
-                    previo.setSiguiente(este.getSiguiente());
-                    este.setSiguiente(null);
-                    este= previo.getSiguiente();
-                }                
-            }else{  //reacomodo los nodos para continuar con la iteración
-                previo=este;
-                este=este.getSiguiente();
-            }
-        }*/
     	NodoTrabajador nodoT = this.obtenerNodoTrabajador(trabajador);
 //    	boolean esDirectivo = nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_DEPARTAMENTO || nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_GENERAL;
     	
@@ -154,31 +131,7 @@ public class Empresa implements IEmpresa{
 
     @Override
     public void quitarDirectivo(ITrabajador trabajador) {
-         /* Cosas que hizo mauro       
-        //verifico si la lista-empresa esta vacía
-        if(this.primerDirectivo==null){//tirar exepcion}
         
-        //creo los nodos que me serviran en la iteración
-        NodoTrabajador este= this.primerDirectivo;  
-    	NodoTrabajador previo= null;  
-
-    	while(este!=null){
-    		System.out.println("Nulo");
-            if(este.persona.equals(trabajador)){  //si el nodo "tocado" contiene al trabajador buscado
-                if(previo==null){   
-                    this.primero = this.primerDirectivo.getSiguiente();    
-                    este.setSiguiente(null);    
-                    este=this.primerDirectivo;  
-                }else{
-                    previo.setSiguiente(este.getSiguiente());
-                    este.setSiguiente(null);
-                    este= previo.getSiguiente();
-                }                
-            }else{  //reacomodo los nodos para continuar con la iteración
-                previo=este;
-                este=este.getSiguiente();
-            }
-        }*/
     	// Solo hay 3 casos posibles, que el Nodotrabajador no tenga un anterior, no tenga un siguiente, o que tenga ambos nodos
     	NodoTrabajador nodoT = this.obtenerNodoTrabajador(trabajador);
 //    	boolean esDirectivo = nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_DEPARTAMENTO || nodoT.getPersona().getCargo() == TipoCargo.DIRECTOR_GENERAL;
@@ -301,23 +254,34 @@ public class Empresa implements IEmpresa{
 
     @Override
     public void liquidarSueldos() {
-        //recorro la lista-empresa y seteo el atributo sueldo de cada trabajador 
         
-        //pago a empleados
+        
+        Double totalDeSueldosAPagar=0;
+
         NodoTrabajador n = this.primero;
-        while(n!=null){
-            n.persona.setMontoACobrar(0);
-            
+
+        System.out.println("\nSUELDOS A PAGAR");
+
+    	while(n != null){
+    		System.out.println(n.persona.getNombre()+": "+n.persona.getSalario()+"+Premio:"+n.persona.getPremio()"\n");
+    		totalDeSueldosAPagar+=(n.persona.getSalario()+n.persona.getPremio());
+    		n=n.siguiente;
+    	}
+
+        n = this.primerDirectivo;
+
+        while(n != null){
+    		System.out.println(n.persona.getNombre()+": "+n.persona.getSalario()+"+Premio:"+n.persona.getPremio()"\n");
+            totalDeSueldosAPagar+=(n.persona.getSalario()+n.persona.getPremio());
             n=n.siguiente;
-        }    
-        
-        //pago a directivos
-        n=this.primerDirectivo;
-        while(n!=null){
-            n.persona.setMontoACobrar(0);
-            
-            n=n.siguiente;
-        }                
+        } 
+
+
+
+        System.out.println("\nTOTAL DE SUELDOS A PAGAR: "+totalDeSueldosAPagar);
+ 
+
+
     }
 
     @Override
