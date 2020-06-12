@@ -254,25 +254,36 @@ public class Empresa implements IEmpresa{
 
     @Override
     public void liquidarSueldos() {
+        //nombre, apellido, fechaIngreso, salario, premio, total
         
-        
-        Double totalDeSueldosAPagar=0;
+        double totalDeSueldosAPagar=0;
 
         NodoTrabajador n = this.primero;
 
         System.out.println("\nSUELDOS A PAGAR");
+//        System.out.println("\nNombre, Apellido, Fecha de Ingreso, Salario, Premio, Salario Total");
 
     	while(n != null){
-    		System.out.println(n.persona.getNombre()+": "+n.persona.getSalario()+"+Premio:"+n.persona.getPremio()"\n");
-    		totalDeSueldosAPagar+=(n.persona.getSalario()+n.persona.getPremio());
+    		ITrabajador t = n.getPersona();
+    		String s = t.getNombre() + "\t" + t.getApellido() + "\n\tFecha de Ingreso: " + t.getFechaIngreso() +
+    					"\n\tSalario: " + t.getSalario() +
+    					"\n\tPremio: " + t.getPremio() + 
+    					"\n\tSalario Total: " + t.getMontoACobrar();
+    		System.out.println(s);
+    		totalDeSueldosAPagar+=(t.getSalario()+t.getPremio());
     		n=n.siguiente;
     	}
 
         n = this.primerDirectivo;
 
         while(n != null){
-    		System.out.println(n.persona.getNombre()+": "+n.persona.getSalario()+"+Premio:"+n.persona.getPremio()"\n");
-            totalDeSueldosAPagar+=(n.persona.getSalario()+n.persona.getPremio());
+    		ITrabajador t = n.getPersona();
+    		String s = t.getNombre() + "\t" + t.getApellido() + "\n\tFecha de Ingreso: " + t.getFechaIngreso() +
+						"\n\tSalario: " + t.getSalario() +
+						"\n\tPremio: " + t.getPremio() + 
+						"\n\tSalario Total: " + t.getMontoACobrar();
+    		System.out.println(s);
+            totalDeSueldosAPagar+=(t.getSalario()+t.getPremio());
             n=n.siguiente;
         } 
 
@@ -311,14 +322,19 @@ public class Empresa implements IEmpresa{
     public ITrabajador obtenerTrabajadorSalarioMinimo() {
         
         //recorro la lista-empresa chequeo cada salario
-        double minimo=100000;   //uso el maximo valor de salario que se puede ganar, como referencia
+        double minimo=0;
         ITrabajador trabajadorMinimo = null; //guarda al trabajador con salario minimo
         
-      
+        // El primer trabajador se usa como referencia
         NodoTrabajador n = this.primero;
+        minimo = n.persona.getMontoACobrar();
+        trabajadorMinimo = n.persona;
+        n = n.getSiguiente();
+        
         while(n!=null){
-            if(n.persona.getSalario() < minimo){
-                minimo = n.persona.getSalario();
+        	double sueldoTrabajador = n.persona.getMontoACobrar();
+            if(sueldoTrabajador < minimo){
+                minimo = sueldoTrabajador;
                 trabajadorMinimo = n.persona;                
             }
             
@@ -327,8 +343,9 @@ public class Empresa implements IEmpresa{
 
         n = this.primerDirectivo;
         while(n!=null){
-            if(n.persona.getSalario() < minimo){
-                minimo = n.persona.getSalario();
+        	double sueldoTrabajador = n.persona.getMontoACobrar();
+            if(sueldoTrabajador < minimo){
+                minimo = sueldoTrabajador;
                 trabajadorMinimo = n.persona;                
             }
             
@@ -340,37 +357,45 @@ public class Empresa implements IEmpresa{
 
     @Override
     public ITrabajador obtenerTrabajadorSalarioMaximo() {
-        //recorro la lista-empresa chequeo cada salario
-        double maximo=0;   
-        ITrabajador trabajadorMaximo = null; //guarda al trabajador con salario máximo
+    	//recorro la lista-empresa chequeo cada salario
+        double maximo=0;
+        ITrabajador trabajadorMaximo = null; //guarda al trabajador con salario minimo
         
+        // El primer trabajador se usa como referencia
         NodoTrabajador n = this.primero;
+        maximo = n.persona.getMontoACobrar();
+        trabajadorMaximo = n.persona;
+        n = n.getSiguiente();
+        
         while(n!=null){
-            if(n.persona.getSalario() >= maximo){
-                maximo = n.persona.getSalario();
+        	double sueldoTrabajador = n.persona.getMontoACobrar();
+            if(sueldoTrabajador >= maximo){
+            	maximo = sueldoTrabajador;
                 trabajadorMaximo = n.persona;                
             }
+            
             n=n.siguiente;
         }  
 
         n = this.primerDirectivo;
         while(n!=null){
-            if(n.persona.getSalario() >= maximo){
-                maximo = n.persona.getSalario();
+        	double sueldoTrabajador = n.persona.getMontoACobrar();
+            if(sueldoTrabajador >= maximo){
+            	maximo = sueldoTrabajador;
                 trabajadorMaximo = n.persona;                
             }
+            
             n=n.siguiente;
-        }  
-        
+        }
         return trabajadorMaximo;
     }
     
     public double obtenerSalarioMinimo() {
-    	return this.obtenerTrabajadorSalarioMinimo().getSalario();
+    	return this.obtenerTrabajadorSalarioMinimo().getMontoACobrar();
     }
     
     public double obtenerSalarioMaximo() {
-    	return this.obtenerTrabajadorSalarioMaximo().getSalario();
+    	return this.obtenerTrabajadorSalarioMaximo().getMontoACobrar();
     }
 
     @Override
@@ -379,13 +404,13 @@ public class Empresa implements IEmpresa{
         double sumatoria=0;   
         NodoTrabajador n = this.primero;
         while(n!=null){
-            sumatoria += n.persona.getSalario();
+            sumatoria += n.persona.getMontoACobrar();
             n=n.siguiente;
         }  
 
         n = this.primerDirectivo;
         while(n!=null){
-            sumatoria += n.persona.getSalario();
+            sumatoria += n.persona.getMontoACobrar();
             n=n.siguiente;
         } 
 
