@@ -1,9 +1,13 @@
 package ayp3.tp;
 
+import java.util.List;
+
 import empresa.Fecha;
 
 public interface ITrabajador {
-	
+
+
+
 	public boolean esEmpleado();
 	
 	public boolean esDirectivo();
@@ -59,6 +63,12 @@ public interface ITrabajador {
 	public void setCargo(TipoCargo ingresarCargo);
 
 	public void setFechaIngreso(Fecha ingresarFecha);
+
+	void setTrabajadoresACargo(ITrabajador trabajadoresACargo);
+
+	List<ITrabajador> getListaACargo();
+	
+	public Fecha getFechaIngreso();
 
 
 	
