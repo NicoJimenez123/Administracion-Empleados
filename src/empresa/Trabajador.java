@@ -209,7 +209,7 @@ public class Trabajador implements ITrabajador{
 		String s = "Nombre del Trabajador: "+this.getNombre()+
 				"\n"+"Apellido: "+this.getApellido()+"\n"+
 				"DNI: "+this.getDni()+"\n"+
-				" trabajador es Empleado?: "+this.esEmpleado()+"\n"+
+				"trabajador es Empleado?: "+this.esEmpleado()+"\n"+
 				"El trabajador es Directivo?: "+this.esDirectivo()+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
 				"tiene "+this.getMesesAntiguedad()+" meses de antiguedad"+"\n"+
 				"Tiene titulo universitario?: "+this.tieneTituloUniversitario()+"\n"+
@@ -255,6 +255,10 @@ public class Trabajador implements ITrabajador{
 		else {
 			this.TrabajadoresACargo.add(trabajador);
 		}
+	}
+	@Override
+	public Fecha getFechaIngreso() {
+		return this.fechaIngreso;
 	}
 	
 	
