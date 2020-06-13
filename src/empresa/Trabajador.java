@@ -212,15 +212,26 @@ public class Trabajador implements ITrabajador{
 	
 	@Override
 	public String toString() {
+		String tieneTituloU;
+		String tieneTituloP;
+		String tipoTrabajador;
+		if(this.tieneTituloUniversitario()) { tieneTituloU = "Si"; }
+		else{ tieneTituloU = "No"; }
+		
+		if(this.tieneTituloPostgrado()) { tieneTituloP = "Si"; }
+		else{ tieneTituloP = "No"; }
+		
+		if(this.esEmpleado()) { tipoTrabajador = "El Trabajador es Empleado"; }
+		else { tipoTrabajador = "El Trabajador es Directivo"; } 
+		
 		String s = "Nombre del Trabajador: "+this.getNombre()+
 				"\n"+"Apellido: "+this.getApellido()+"\n"+
 				"DNI: "+this.getDni()+"\n"+
-				"trabajador es Empleado?: "+this.esEmpleado()+"\n"+
-				"El trabajador es Directivo?: "+this.esDirectivo()+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
+				tipoTrabajador+"\n"+"Cargo que lleva a cabo: "+this.getCargo()+"\n"+
 				"tiene "+this.getMesesAntiguedad()+" meses de antiguedad"+"\n"+
-				"Tiene titulo universitario?: "+this.tieneTituloUniversitario()+"\n"+
+				"Tiene titulo universitario?: "+tieneTituloU+"\n"+
 				"Titulo Universitario: "+this.getTituloUniversitario()+"\n"+
-				"Tiene titulo de postgrado?: "+this.tieneTituloPostgrado()+"\n"+
+				"Tiene titulo de postgrado?: "+tieneTituloP+"\n"+
 				"Titulo Postgrado: "+this.getTituloPostgrado()+"\n"+
 				"Salario: "+this.getSalario()+"\n"+
 				"Empleados a cargo (directamente): "+this.getCantidadEmpleadosACargoDirecto()+"\n"+
