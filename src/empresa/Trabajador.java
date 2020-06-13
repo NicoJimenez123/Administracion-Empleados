@@ -1,4 +1,5 @@
 package empresa;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,28 +183,32 @@ public class Trabajador implements ITrabajador{
 		return this.cantidad();
 	}
 	public int cantidad() {
-		int c = 0;
+		List<ITrabajador> listaTrabajadores = new ArrayList<>();
 		for(ITrabajador t: this.TrabajadoresACargo) {
-			// Acá recorro los directores generales
-			for(ITrabajador t2: t.getListaACargo()) {
-				// Acá recorro los directores de departamento
-				for(ITrabajador t3: t2.getListaACargo()) {
-					// Acá recorro los jefes
-					for(ITrabajador t4: t3.getListaACargo()) {
-						// Acá recorro los supervisores
-						for(ITrabajador t5: t4.getListaACargo()) {
-							// Acá recorro los operarios
-							c++;
-						}
-						c++;
-					}
-					c++;
-				}
-				c++;
+			// Acá recorro los directores de departamento, en caso de que sea un director general esta hecho
+			if(!listaTrabajadores.contains(t)) {
+				listaTrabajadores.add(t);
 			}
-			c++;
+			for(ITrabajador t2: t.getListaACargo()) {
+				// Acá recorro los jefes
+				if(!listaTrabajadores.contains(t2)) {
+					listaTrabajadores.add(t2);
+				}
+				for(ITrabajador t3: t2.getListaACargo()) {
+					// Acá recorro los supervisores
+					if(!listaTrabajadores.contains(t3)) {
+						listaTrabajadores.add(t3);
+					}
+					for(ITrabajador t4: t3.getListaACargo()) {
+						// Acá recorro los operarios
+						if(!listaTrabajadores.contains(t4)) {
+							listaTrabajadores.add(t4);
+						}
+					}
+				}
+			}
 		}
-		return c;
+		return listaTrabajadores.size();
 	}
 	@Override
 	public List<ITrabajador> getListaACargo(){

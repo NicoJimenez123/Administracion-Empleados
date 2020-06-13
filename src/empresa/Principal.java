@@ -14,7 +14,7 @@ public class Principal {
 	public static void menu() {
 		ITrabajador t = null;
 		while(true) {
-			long dni;
+			long dni;int opcion = 0;
 			for(int i = 0; i < 80; i++) // Default Height of cmd is 300 and Default width is 80
 			    System.out.println(); // Prints a backspace
 			System.out.println();
@@ -32,7 +32,13 @@ public class Principal {
 			System.out.println("Opcion 11) Obtener Personas a Cargo (Total)");
 			System.out.println("Opcion 12) Liquidar Sueldos");
 			System.out.println("Opcion 13) Establecer Personas a Cargo");
-			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");
+			System.out.println("Opcion 99) Salir");
+			try {
+				opcion = Consola.pedirEntero("Ingrese una Opcion: ");
+			}
+			catch(Exception e) {
+				opcion = 0;
+			}
 			switch(opcion) {
 			case 1:
 				t = altaTrabajador();
@@ -69,19 +75,20 @@ public class Principal {
 				break;
 			case 9:
 				dni = ingresarDni();
-				if(dni != -1)
+				t = empresa.obtenerTrabajador(dni);
+				if(dni != -1 && t != null)
 					empresa.generarNomina(dni);
 				break;
 			case 10:
 				dni = ingresarDni();
-				if(dni != -1) {
-					t = empresa.obtenerTrabajador(dni);
+				t = empresa.obtenerTrabajador(dni);
+				if(dni != -1 && t != null) {
 					System.out.println(t.getCantidadEmpleadosACargoDirecto());}
 				break;
 			case 11:
 				dni = ingresarDni();
-				if(dni != -1) {
-					t = empresa.obtenerTrabajador(dni);
+				t = empresa.obtenerTrabajador(dni);
+				if(dni != -1 && t != null) {
 					System.out.println(t.getCantidadEmpleadosACargoTotal());}
 				break;
 			case 12:
@@ -93,6 +100,8 @@ public class Principal {
 			case -123:
 				anadirTrabajadoresPredeterminados();
 				break;
+			case 99:
+				return;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
 			Consola.pedirTexto("Presione Enter para Continuar");
@@ -211,6 +220,9 @@ public class Principal {
     	ITrabajador trabajador = empresa.obtenerTrabajador(dni);
     	if(dni == -1) {
     		// Si el dni es -1 no se debe acceder al sig menu
+    	}
+    	if(trabajador == null) {
+    		System.out.println("No existe un Trabajador con ese DNI");
     	}
     	else if(trabajador != null) {
 //    	ESTE MENU SE MOSTRARA SOLO SI EL TRABAJADOR ES DISTINTO DE NULL

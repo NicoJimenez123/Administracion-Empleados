@@ -599,17 +599,22 @@ public class Empresa implements IEmpresa{
 
     }
     public void generarNomina(long dni) {
-    	ITrabajador t = this.obtenerTrabajador(dni);
-    	System.out.println("DNI: "+t.getDni());
-    	System.out.println("Nombre: "+t.getNombre());
-    	System.out.println("Apellido: "+t.getApellido());
-    	System.out.println("Cargo: "+t.getCargo());
-    	System.out.println("Antigüedad: "+t.getMesesAntiguedad()+" meses");
-    	System.out.println("Periodo de Pago: "+"<Insertar Fecha>");
-    	System.out.println("Conceptos de Pago:");
-    	System.out.println("\tSalario por Cargo:\t"+t.getSalario());
-    	System.out.println("\tPremios:\t\t"+t.getPremio());
-    	System.out.println("\tSalario a Percibir:\t"+t.getMontoACobrar());
+    	if(this.obtenerTrabajador(dni) != null) {
+	    	ITrabajador t = this.obtenerTrabajador(dni);
+	    	System.out.println("DNI: "+t.getDni());
+	    	System.out.println("Nombre: "+t.getNombre());
+	    	System.out.println("Apellido: "+t.getApellido());
+	    	System.out.println("Cargo: "+t.getCargo());
+	    	System.out.println("Antigüedad: "+t.getMesesAntiguedad()+" meses");
+	    	System.out.println("Periodo de Pago: "+"<Insertar Fecha>");
+	    	System.out.println("Conceptos de Pago:");
+	    	System.out.println("\tSalario por Cargo:\t"+t.getSalario());
+	    	System.out.println("\tPremios:\t\t"+t.getPremio());
+	    	System.out.println("\tSalario a Percibir:\t"+t.getMontoACobrar());
+    	}
+    	else {
+    		System.out.println("No Existe un Trabajador con ese DNI");
+    	}
     }
     public NodoTrabajador obtenerNodoTrabajador(ITrabajador t) {
     	// Primero recorro los directivos
