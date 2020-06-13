@@ -75,6 +75,8 @@ public class Empresa implements IEmpresa{
     		System.out.println("No Existe un Trabajador con ese DNI");
     	}
     	else {
+    		if(trabajador.getCargo() != TipoCargo.DIRECTOR_GENERAL)
+    			this.eliminarACargo(trabajador);
 	    	TipoCargo cargo = trabajador.getCargo();
 	    	boolean esDirectivo = (cargo == TipoCargo.DIRECTOR_DEPARTAMENTO) || (cargo == TipoCargo.DIRECTOR_GENERAL);
 	    	if(esDirectivo) {
@@ -86,7 +88,27 @@ public class Empresa implements IEmpresa{
     	}
     }
     
-    @Override
+    private void eliminarACargo(ITrabajador t) {
+// 		Metodo para eliminar al trabajador de la lista de personas a cargo
+    	//Primero recorro los directivos
+    	NodoTrabajador n = this.primerDirectivo;
+		while(n != null) {
+			if(n.getPersona().tieneACargo(t)) {
+				n.getPersona().quitarTrabajadorACargo(t);
+			}
+			n = n.getSiguiente();
+		}
+		// Recorro los empleados
+		n = this.primero;
+		while(n != null) {
+			if(n.getPersona().tieneACargo(t)) {
+				n.getPersona().quitarTrabajadorACargo(t);
+			}
+			n = n.getSiguiente();
+		}
+	}
+
+	@Override
     public void quitarEmpleado(ITrabajador trabajador) {
         
         

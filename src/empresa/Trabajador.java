@@ -283,6 +283,11 @@ public class Trabajador implements ITrabajador{
 	public Fecha getFechaIngreso() {
 		return this.fechaIngreso;
 	}
-	
+	public void quitarTrabajadorACargo(ITrabajador t) {
+		this.TrabajadoresACargo.remove(t);
+	}
+	public boolean tieneACargo(ITrabajador t) {
+		return this.TrabajadoresACargo.contains(t);
+	}
 	
 }
