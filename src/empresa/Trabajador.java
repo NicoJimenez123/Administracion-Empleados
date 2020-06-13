@@ -59,11 +59,14 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public String getTituloUniversitario() {
+		if(!this.tieneTituloUniversitario()) {
+			return "No Posee Titulo Universitario";
+		}
 		return titulo;
 	}
 	@Override
 	public boolean tieneTituloUniversitario() {
-		if(titulo == "" || titulo == null) {
+		if(titulo == null || titulo.length() == 0) {
 			return false;
 		}else {
 			return true;
@@ -79,11 +82,14 @@ public class Trabajador implements ITrabajador{
 	}
 	@Override
 	public String getTituloPostgrado() {
+		if(!this.tieneTituloPostgrado()) {
+			return "No Posee Titulo de Postgrado";
+		}
 		return titulop;
 	}
 	@Override
 	public boolean tieneTituloPostgrado() {
-		if(titulop == "" || titulop == null) {
+		if(titulop == null || titulop.length() == 0) {
 			return false;
 		}else {
 			return true;
@@ -218,7 +224,8 @@ public class Trabajador implements ITrabajador{
 				"Titulo Postgrado: "+this.getTituloPostgrado()+"\n"+
 				"Salario: "+this.getSalario()+"\n"+
 				"Empleados a cargo (directamente): "+this.getCantidadEmpleadosACargoDirecto()+"\n"+
-				"Empleado a cargo (total): "+this.getCantidadEmpleadosACargoTotal();		 
+				"Empleado a cargo (total): "+this.getCantidadEmpleadosACargoTotal();	
+		
 		return s;
 	}
 	@Override
