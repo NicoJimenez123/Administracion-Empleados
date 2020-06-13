@@ -9,12 +9,12 @@ import empresa.Trabajador;
 public class Principal {
 	static Empresa empresa = new Empresa();
 	public static void main(String[] args) {
-		anadirTrabajadoresPredeterminados();
 		menu();
 	}
 	public static void menu() {
-		ITrabajador t;
+		ITrabajador t = null;
 		while(true) {
+			long dni;
 			for(int i = 0; i < 80; i++) // Default Height of cmd is 300 and Default width is 80
 			    System.out.println(); // Prints a backspace
 			System.out.println();
@@ -42,7 +42,9 @@ public class Principal {
 				}
 				break;
 			case 2:
-				empresa.quitarTrabajador(ingresarDni());
+				dni = ingresarDni();
+				if(dni != -1)
+					empresa.quitarTrabajador(dni);
 				break;
 			case 3:
 				empresa.listarTrabajadores();
@@ -66,21 +68,30 @@ public class Principal {
 				System.out.println("Salario Promedio: "+empresa.obtenerPromedioSalarios());
 				break;
 			case 9:
-				empresa.generarNomina(ingresarDni());
+				dni = ingresarDni();
+				if(dni != -1)
+					empresa.generarNomina(dni);
 				break;
 			case 10:
-				t = empresa.obtenerTrabajador(ingresarDni());
-				System.out.println(t.getCantidadEmpleadosACargoDirecto());
+				dni = ingresarDni();
+				if(dni != -1) {
+					t = empresa.obtenerTrabajador(dni);
+					System.out.println(t.getCantidadEmpleadosACargoDirecto());}
 				break;
 			case 11:
-				t = empresa.obtenerTrabajador(ingresarDni());
-				System.out.println(t.getCantidadEmpleadosACargoTotal());
+				dni = ingresarDni();
+				if(dni != -1) {
+					t = empresa.obtenerTrabajador(dni);
+					System.out.println(t.getCantidadEmpleadosACargoTotal());}
 				break;
 			case 12:
 				empresa.liquidarSueldos();
 				break;
 			case 13:
 				establecerPersonaACargo();
+				break;
+			case -123:
+				anadirTrabajadoresPredeterminados();
 				break;
 			default:System.out.println("Opcion Ingresada No Valida");
 			}
@@ -91,7 +102,9 @@ public class Principal {
 		long dni;
 		while(true) {
 			try {
-				dni = Consola.pedirEntero("Ingrese el Numero de DNI: ");
+				dni = Consola.pedirEntero("Ingrese el Numero de DNI (Ingrese -1 para cancelar): ");
+				if(dni == -1)
+					return -1;
 				break;
 			}
 			catch(Exception e) {
@@ -109,7 +122,7 @@ public class Principal {
 		// Y voy rellenando las variables
 		dni = ingresarDni();
 		// Si el DNI ya está ingresado: 
-		if(empresa.obtenerTrabajador(dni) == null) {
+		if(empresa.obtenerTrabajador(dni) == null && dni != -1) {
 			// Implica que no hay otro trabajador con ese DNI
 			nombre = Consola.pedirTexto("Ingrese el Nombre: ");
 			apellido = Consola.pedirTexto("Ingrese el Apellido: ");
@@ -196,7 +209,10 @@ public class Principal {
     	long dni = ingresarDni();
     	int opcion = 0;
     	ITrabajador trabajador = empresa.obtenerTrabajador(dni);
-    	if(trabajador != null) {
+    	if(dni == -1) {
+    		// Si el dni es -1 no se debe acceder al sig menu
+    	}
+    	else if(trabajador != null) {
 //    	ESTE MENU SE MOSTRARA SOLO SI EL TRABAJADOR ES DISTINTO DE NULL
     	boolean trabajadorEsDirectivo = trabajador.getCargo() == TipoCargo.DIRECTOR_DEPARTAMENTO || trabajador.getCargo() == TipoCargo.DIRECTOR_GENERAL;
     	do{
@@ -296,31 +312,34 @@ public class Principal {
     public static void establecerPersonaACargo() {
     	System.out.println("A Continuación, Ingrese el DNI de la Persona Encargada");
 		ITrabajador personaACargo;
-		ITrabajador t = empresa.obtenerTrabajador(ingresarDni());
-		if(t == null) {
-			System.out.println("No Existe un Trabajador con ese DNI");
-		}
-		else {
-			if (t.getCargo() == TipoCargo.OPERARIO) {
-				System.out.println("Los Operarios no Pueden Tener Personas a Cargo");
+		long dni = ingresarDni();
+		if(dni != -1) {
+			// Si el dni es -1 significa que no se quiere establecer personas a cargo
+			ITrabajador t = empresa.obtenerTrabajador(dni);
+			if(t == null) {
+				System.out.println("No Existe un Trabajador con ese DNI");
 			}
 			else {
-				System.out.println("A Continuación, Ingrese el DNI de la Persona a tener a Cargo");
-				personaACargo = empresa.obtenerTrabajador(ingresarDni());
-				if(personaACargo == null) {
-					System.out.println("No Existe un Trabajador con ese DNI");
+				if (t.getCargo() == TipoCargo.OPERARIO) {
+					System.out.println("Los Operarios no Pueden Tener Personas a Cargo");
 				}
 				else {
-					if(t.getCargo().esMayor(personaACargo.getCargo())) {
-						t.setTrabajadoresACargo(personaACargo);
+					System.out.println("A Continuación, Ingrese el DNI de la Persona a tener a Cargo");
+					personaACargo = empresa.obtenerTrabajador(ingresarDni());
+					if(personaACargo == null) {
+						System.out.println("No Existe un Trabajador con ese DNI");
 					}
 					else {
-						System.out.println("No se Puede Asignar una Persona a Cargo de una de Rango Mayor");
+						if(t.getCargo().esMayor(personaACargo.getCargo())) {
+							t.setTrabajadoresACargo(personaACargo);
+						}
+						else {
+							System.out.println("No se Puede Asignar una Persona a Cargo de una de Rango Mayor");
+						}
 					}
 				}
 			}
 		}
-		
     }
 }
 
