@@ -1,0 +1,135 @@
+[1mdiff --git a/.classpath b/.classpath[m
+[1mindex 18d70f0..7e894e7 100644[m
+[1m--- a/.classpath[m
+[1m+++ b/.classpath[m
+[36m@@ -1,6 +1,7 @@[m
+ <?xml version="1.0" encoding="UTF-8"?>[m
+ <classpath>[m
+[31m-	<classpathentry kind="src" path="src"/>[m
+[32m+[m	[32m<classpathentry excluding="unpaz/" kind="src" path="src"/>[m
+ 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>[m
+[32m+[m	[32m<classpathentry kind="lib" path="src/ayp3.jar"/>[m
+ 	<classpathentry kind="output" path="bin"/>[m
+ </classpath>[m
+[1mdiff --git a/bin/.gitignore b/bin/.gitignore[m
+[1mdeleted file mode 100644[m
+[1mindex 4d7bced..0000000[m
+[1m--- a/bin/.gitignore[m
+[1m+++ /dev/null[m
+[36m@@ -1,5 +0,0 @@[m
+[31m-/Empresa.class[m
+[31m-/NodoTrabajador.class[m
+[31m-/TipoCargo.class[m
+[31m-/ayp3/[m
+[31m-/Principal.class[m
+[1mdiff --git a/bin/Fecha.class b/bin/Fecha.class[m
+[1mindex 4ab326b..9632c52 100644[m
+Binary files a/bin/Fecha.class and b/bin/Fecha.class differ
+[1mdiff --git a/bin/Trabajador.class b/bin/Trabajador.class[m
+[1mindex 9962b7f..ff2de26 100644[m
+Binary files a/bin/Trabajador.class and b/bin/Trabajador.class differ
+[1mdiff --git a/src/Principal.java b/src/Principal.java[m
+[1mindex 34c3b84..bcfb261 100644[m
+[1m--- a/src/Principal.java[m
+[1m+++ b/src/Principal.java[m
+[36m@@ -26,6 +26,8 @@[m [mpublic class Principal {[m
+ 			System.out.println("Opcion 3) Listar Trabajadores.");[m
+ 			System.out.println("Opcion 4) Listar Trabajadores por Nombre y DNI.");[m
+ 			System.out.println("Opcion 5) Modificar Datos de un Trabajador.");[m
+[32m+[m			[32mSystem.out.println("Opcion 6) Listar Trabajadores por Tipo de Cargo");[m
+[32m+[m			[32mSystem.out.println("Opcion 7) Calcular Total de Salarios a Pagar");[m
+ 			int opcion = Consola.pedirEntero("Ingrese una Opcion: ");[m
+ 			switch(opcion) {[m
+ 			case 1:[m
+[36m@@ -43,6 +45,13 @@[m [mpublic class Principal {[m
+ 			case 5:[m
+ 				modificarDatos();[m
+ 				break;[m
+[32m+[m			[32mcase 6:[m
+[32m+[m				[32mempresa.listaPorTipoCargo();[m
+[32m+[m				[32mbreak;[m
+[32m+[m			[32mcase 7:[m
+[32m+[m				[32mDouble m = empresa.obtenerMontoTotalAPagar();[m
+[32m+[m				[32mSystem.out.println("Se debe Pagar $"+m+" en Salarios");[m
+[32m+[m				[32mbreak;[m
+ 			default:System.out.println("Opcion Ingresada No Valida");[m
+ 			}[m
+ 			System.out.println();[m
+[1mdiff --git a/src/Trabajador.java b/src/Trabajador.java[m
+[1mindex fb44f17..dace39e 100644[m
+[1m--- a/src/Trabajador.java[m
+[1m+++ b/src/Trabajador.java[m
+[36m@@ -112,40 +112,44 @@[m [mpublic class Trabajador implements ITrabajador{[m
+ 	}[m
+ 	@Override[m
+ 	public double getPremio() {[m
+[32m+[m		[32mboolean esDirectivo = cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL);[m
+[32m+[m		[32mboolean esEmpleado = cargo.equals(TipoCargo.JEFES) || cargo.equals(TipoCargo.SUPERVISOR) || cargo.equals(TipoCargo.OPERARIO);[m
+[32m+[m		[32mdouble premio = 0;[m
+ 		//$100000 a los directivos con, al menos, 12 meses de antig�edad.[m
+[31m-		double premio=0;[m
+[31m-	if(cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL)[m
+[31m-			&& this.getMesesAntiguedad()>=12)	{[m
+[31m-		premio=cargo.getSalario()+100000;[m
+[32m+[m		[32mif (esDirectivo && this.getMesesAntiguedad() >= 12) {[m
+[32m+[m[32m//        	System.out.println("Directivo con 12 meses");[m
+[32m+[m			[32mpremio += 100000;[m
+[32m+[m		[32m}[m
+ 		// $50000 a los directivos sin un m�nimo de 12 meses de antig�edad.[m
+[31m-	} if (cargo.equals(TipoCargo.DIRECTOR_DEPARTAMENTO )||cargo.equals(TipoCargo.DIRECTOR_GENERAL)[m
+[31m-			&& this.getMesesAntiguedad()<12){[m
+[31m-		premio=cargo.getSalario()+50000;[m
+[31m-	}[m
+[31m-	// $60000 a los no directivos con, al menos, 12 meses de antig�edad.[m
+[31m-		if(cargo.equals(TipoCargo.JEFES )||cargo.equals(TipoCargo.SUPERVISOR)||cargo.equals(TipoCargo.OPERARIO)[m
+[31m-			&& this.getMesesAntiguedad()>=12) {[m
+[31m-		premio=cargo.getSalario()+60000;[m
+[31m-	}// $30000 a los no directivos sin un m�nimo de 12 meses de antig�edad.[m
+[31m-		if(cargo.equals(TipoCargo.JEFES )||cargo.equals(TipoCargo.SUPERVISOR)||cargo.equals(TipoCargo.OPERARIO)[m
+[31m-			&& this.getMesesAntiguedad()<12) {[m
+[31m-		premio=cargo.getSalario()+30000;[m
+[32m+[m		[32mif (esDirectivo && this.getMesesAntiguedad() < 12) {[m
+[32m+[m[32m//        	System.out.println("Directivo sin 12 meses");[m
+[32m+[m			[32mpremio += 50000;[m
+[32m+[m		[32m}[m
+[32m+[m		[32m// $60000 a los no directivos con, al menos, 12 meses de antig�edad.[m
+[32m+[m		[32mif (esEmpleado && this.getMesesAntiguedad() >= 12) {[m
+[32m+[m[32m//        	System.out.println("Empleado con 12 meses");[m
+[32m+[m			[32mpremio += 60000;[m
+[32m+[m		[32m}[m
+[32m+[m		[32m// $30000 a los no directivos sin un m�nimo de 12 meses de antig�edad.[m
+[32m+[m		[32mif (esEmpleado && this.getMesesAntiguedad() < 12) {[m
+[32m+[m			[32mpremio += 30000;[m
+[32m+[m		[32m}[m
+ 		// $15000 m�s a los empleados con t�tulo universitario.[m
+[31m-		}if(this.tieneTituloUniversitario()) {[m
+[31m-			premio=cargo.getSalario()+15000;[m
+[32m+[m		[32mif (this.tieneTituloUniversitario()) {[m
+[32m+[m			[32mpremio += 15000;[m
+[32m+[m		[32m}[m
+[32m+[m		[32m// $25000 m�s a los empleados con t�tulo de postgrado.[m
+[32m+[m		[32mif (this.tieneTituloPostgrado()) {[m
+[32m+[m			[32mpremio += 25000;[m
+ 		}[m
+[31m-		//$25000 m�s a los empleados con t�tulo de postgrado.[m
+[31m-		if(this.tieneTituloPostgrado()) {[m
+[31m-			premio=cargo.getSalario()+25000;[m
+[31m-			}[m
+ 		// $1000 m�s por empleado a cargo directo[m
+[31m-			if(this.getCantidadEmpleadosACargoDirecto()>0) {[m
+[31m-				premio=cargo.getSalario()+(1000*this.getCantidadEmpleadosACargoDirecto());[m
+[31m-			}[m
+[31m-		//$500 m�s por empleado a cargo indirecto[m
+[31m-			if(this.getCantidadEmpleadosACargoTotal()>0) {[m
+[31m-				premio=cargo.getSalario()+(500*this.getCantidadEmpleadosACargoTotal());[m
+[31m-			}[m
+[32m+[m		[32mif (this.getCantidadEmpleadosACargoDirecto() > 0) {[m
+[32m+[m			[32mpremio += (1000 * this.getCantidadEmpleadosACargoDirecto());[m
+[32m+[m		[32m}[m
+[32m+[m		[32m// $500 m�s por empleado a cargo indirecto[m
+[32m+[m		[32mif (this.getCantidadEmpleadosACargoTotal() > 0) {[m
+[32m+[m			[32mpremio += (500 * this.getCantidadEmpleadosACargoTotal());[m
+[32m+[m		[32m}[m
+ 		return premio;[m
+ 	[m
+ 	}[m

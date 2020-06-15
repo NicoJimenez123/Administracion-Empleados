@@ -70,6 +70,10 @@ public interface ITrabajador {
 	
 	public Fecha getFechaIngreso();
 
+	public boolean tieneACargo(ITrabajador t);
+
+	public void quitarTrabajadorACargo(ITrabajador t);
+
 
 	
 	
